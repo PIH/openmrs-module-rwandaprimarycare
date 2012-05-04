@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class PatientDashboardController {
+public class RwandaPrimaryCarePatientDashboardController {
 
     
     protected final Log log = LogFactory.getLog(this.getClass());

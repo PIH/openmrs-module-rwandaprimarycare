@@ -93,6 +93,13 @@
 				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>htmlformentry-api</artifactId>
+				<version>1.9.3</version>
+				<type>jar</type>
+				<scope>test</scope>
+		    </dependency>
 		</dependencies>
 	</dependencyManagement>
 

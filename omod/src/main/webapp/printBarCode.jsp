@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="resources/touchscreenHeader.jsp"%>
 
-<!-- note: controller is PatientDashboardController-->
+<!-- note: controller is RwandaPrimaryCarePatientDashboardController-->
 <table><tr><Td>
 	
 	<%@ include file="patientResultsTableWhite.jspf"%>

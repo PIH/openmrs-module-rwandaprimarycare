@@ -1,18 +1,16 @@
 package org.openmrs.module.rwandaprimarycare;
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
-import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
+import org.openmrs.module.rwandaprimarycare.PrimaryCareUtil;
 
 public class PrimaryCareServiceTest extends BaseModuleContextSensitiveTest {
     
    
     @Override
     public Boolean useInMemoryDatabase(){
-        return false;
+        return true;
     }
     
 //    public void runBeforeAllTests() throws Exception {
@@ -69,7 +67,6 @@ public class PrimaryCareServiceTest extends BaseModuleContextSensitiveTest {
 
     @Test
     public void testNationalIdentifierStuff() throws Exception {
-        Context.authenticate("admin", "test");
         String nationalIdLong = "1 1974 8 0006220 0 690108042008THOMAS                   David                    1624";
         String nationalIdShort = "1 1974 8 0006220 0 69";
         
