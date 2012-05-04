@@ -52,7 +52,6 @@ public class PrimaryCareUtil {
     
     //Get the idgen identifier source for the primary identifier type
     public static IdentifierSource getPrimaryIdentifierTypeSource() {
-        IdentifierSource is = null;
         PatientIdentifierType pit = PrimaryCareBusinessLogic.getPrimaryPatientIdentiferType();
         List<IdentifierSource> isss = Context.getService(IdentifierSourceService.class).getAllIdentifierSources(false);
         
@@ -302,7 +301,8 @@ public class PrimaryCareUtil {
     	
     	List<Location> ret = new ArrayList<Location>();
     	String gp = Context.getAdministrationService().getGlobalProperty(PrimaryCareConstants.GLOBAL_PROPERTY_RWANDA_LOCATION_CODE);
-    	
+    	if (gp == null)
+    		throw new RuntimeException("you must set the global property registration.rwandaLocationCodes for this to work.");
 		 if (gp.contains("|")){
 			 for (StringTokenizer st = new StringTokenizer(gp, "|"); st.hasMoreTokens(); ) {
 	             String str = st.nextToken().trim();

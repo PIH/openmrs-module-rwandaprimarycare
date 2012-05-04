@@ -101,6 +101,7 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
      		EncounterType et = Context.getEncounterService().getEncounterType("Registration");
      		if (et == null) {
      		    et = new EncounterType("Registration", "Patient seen at registration desk");
+     		    et.setUuid("cfe614d5-fa7e-4919-b76b-a66117f57e4c");
      		    Context.getEncounterService().saveEncounterType(et);
      		    log.info("Created new Registration encounter type: " + et);
      		}
@@ -110,6 +111,7 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
  		    EncounterType et = Context.getEncounterService().getEncounterType("Vitals");
              if (et == null) {
                  et = new EncounterType("Vitals", "Patient vital signs taken before seeing clinician");
+                 et.setUuid("daf32375-d293-4e27-a68d-2a58494c96e1");
                  Context.getEncounterService().saveEncounterType(et);
                  log.info("Created new Vitals encounter type: " + et);
              }
@@ -119,6 +121,7 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
              EncounterType et = Context.getEncounterService().getEncounterType("Diagnosis");
              if (et == null) {
                  et = new EncounterType("Diagnosis", "Diagnosis recorded");
+                 et.setUuid("e9355a6e-b2df-44b4-911c-104c6a41ed24");
                  Context.getEncounterService().saveEncounterType(et);
                  log.info("Created new Diagnosis encounter type: " + et);
              }
@@ -129,6 +132,7 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
              if (p == null) {
                  p = new Privilege("Print Registration Barcodes Offline", "Allows a user to print registration barcodes offline.");
                  p.setRetired(false);
+                 p.setUuid("c733a17e-bf39-4aba-a1b4-06aa013b7c49");
                  Context.getUserService().savePrivilege(p);
                  log.info("Created new Privilege" + p.getPrivilege());
              }
@@ -139,6 +143,7 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
              if (p == null) {
                  p = new Privilege("Generate Bulk Primary Care Ids All Locations", "Allows a user to generate a csv of primary care ids for any registered location.");
                  p.setRetired(false);
+                 p.setUuid("1149b78f-9964-4bf6-ac19-c01a4c268879");
                  Context.getUserService().savePrivilege(p);
                  log.info("Created new Privilege" + p.getPrivilege());
              }

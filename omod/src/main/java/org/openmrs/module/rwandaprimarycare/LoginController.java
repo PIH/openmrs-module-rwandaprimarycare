@@ -53,7 +53,7 @@ public class LoginController {
 					User user = Context.getAuthenticatedUser();
 					
 					if(user.getUserProperties() != null && !user.getUserProperties().containsKey("keyboardType")){
-						user.getUserProperties().put("keyboardType", "ABC"); //QWERTY
+						user.getUserProperties().put("keyboardType", "QWERTY"); //ABC is the other option
 						user = Context.getUserService().saveUser(user, null);
 					}
 					session.setAttribute("keyboardType", user.getUserProperty("keyboardType"));

@@ -12,7 +12,7 @@
 		<tr>
 			<td><spring:message code="rwandaprimarycare.touchscreen.locale"/></td>
 			<td>
-				<select name="locales" helpText="${localeText}">
+				<select name="locales" helpText="${localeText}" field_type="disabled">
 					<option value=""></option>
 					<c:forEach var="locale" items="${locales}">
 						<option value="${locale}" >

@@ -178,54 +178,83 @@ public class PrimaryCareBusinessLogic {
 
     public static Concept getWeightConcept() {
         Concept concept = null;
-        try {
-            concept = Context.getConceptService().getConcept(Integer.valueOf(Context.getAdministrationService().getGlobalProperty("concept.weight")));
-        } catch (Exception ex) { }
-        if (concept == null) {
-            throw new RuntimeException("Cannot find concept specified by global property concept.weight");
+        String gp = Context.getAdministrationService().getGlobalProperty("concept.weight");
+        if (gp == null)
+        	throw new RuntimeException("You must set the global property concept.weight.");
+        
+        concept = Context.getConceptService().getConceptByUuid(gp);
+        if (concept == null){
+	        try {
+	            concept = Context.getConceptService().getConcept(Integer.valueOf(gp));
+	        } catch (Exception ex) { }
+	        if (concept == null) {
+	            throw new RuntimeException("Cannot find concept specified by global property concept.weight");
+	        }
         }
         return concept;
     }
     
     public static Concept getHeightConcept() {
         Concept concept = null;
-        try {
-            concept = Context.getConceptService().getConcept(Integer.valueOf(Context.getAdministrationService().getGlobalProperty("concept.height")));
-        } catch (Exception ex) { }
-        if (concept == null) {
-            throw new RuntimeException("Cannot find concept specified by global property concept.height");
-        }
+        String gp = Context.getAdministrationService().getGlobalProperty("concept.height");
+        if (gp == null)
+        	throw new RuntimeException("You must set the global property concept.height");
+        concept = Context.getConceptService().getConceptByUuid(gp);
+        if (concept == null){
+	        try {
+	            concept = Context.getConceptService().getConcept(Integer.valueOf(gp));
+	        } catch (Exception ex) { }
+	        if (concept == null) {
+	            throw new RuntimeException("Cannot find concept specified by global property concept.height");
+	        }
+        }    
         return concept;
     }
 
     public static Concept getTemperatureConcept() {
         Concept concept = null;
-        try {
-            concept = Context.getConceptService().getConcept(Integer.valueOf(Context.getAdministrationService().getGlobalProperty("concept.temperature")));
-        } catch (Exception ex) { }
-        if (concept == null) {
-            throw new RuntimeException("Cannot find concept specified by global property concept.temperature");
+        String gp = Context.getAdministrationService().getGlobalProperty("concept.temperature");
+        if (gp == null)
+        	throw new RuntimeException("You must set the global property concept.temperature.");
+        concept = Context.getConceptService().getConceptByUuid(gp);
+        if (concept == null){
+	        try {
+	            concept = Context.getConceptService().getConcept(Integer.valueOf(gp));
+	        } catch (Exception ex) { }
+	        if (concept == null) {
+	            throw new RuntimeException("Cannot find concept specified by global property concept.temperature");
+	        }
         }
         return concept;
     }
     
     public static Concept getDiagnosisNonCodedConcept() {
         Concept concept = null;
-        try {
-            concept = Context.getConceptService().getConcept(Integer.valueOf(Context.getAdministrationService().getGlobalProperty("concept.diagnosisNonCoded")));
-        } catch (Exception ex) { }
-        if (concept == null) {
-            throw new RuntimeException("Cannot find concept specified by global property concept.diagnosisNonCoded");
+        String gp = Context.getAdministrationService().getGlobalProperty("concept.diagnosisNonCoded");
+        if (gp == null)
+        	throw new RuntimeException("You must set the global property concept.diagnosisNonCoded");
+        concept = Context.getConceptService().getConceptByUuid(gp);
+        if (concept == null){
+	        try {
+	            concept = Context.getConceptService().getConcept(Integer.valueOf(gp));
+	        } catch (Exception ex) { }
+	        if (concept == null) {
+	            throw new RuntimeException("Cannot find concept specified by global property concept.diagnosisNonCoded");
+	        }
         }
         return concept;
     }
 
     public static PatientIdentifierType getPrimaryPatientIdentiferType() {
+    	String gp = Context.getAdministrationService().getGlobalProperty(PrimaryCareConstants.GLOBAL_PROPERTY_PRIMARY_IDENTIFIER_TYPE);
+    	if (gp == null)
+    		throw new RuntimeException("You must set the value for the main identifier type for primary care.  This is set in GP:  registration.primaryIdentifierType");
         PatientIdentifierType pit = null;
+        pit = Context.getPatientService().getPatientIdentifierTypeByUuid(gp);
         try {
-            pit = Context.getPatientService().getPatientIdentifierType(Integer.valueOf(Context.getAdministrationService().getGlobalProperty(PrimaryCareConstants.GLOBAL_PROPERTY_PRIMARY_IDENTIFIER_TYPE)));
+            pit = Context.getPatientService().getPatientIdentifierType(Integer.valueOf(gp));
         } catch (Exception ex) { 
-            pit = Context.getPatientService().getPatientIdentifierTypeByName(Context.getAdministrationService().getGlobalProperty(PrimaryCareConstants.GLOBAL_PROPERTY_PRIMARY_IDENTIFIER_TYPE));
+            pit = Context.getPatientService().getPatientIdentifierTypeByName(gp);   
         }
         if (pit == null) {
             throw new RuntimeException("Cannot find patient identifier type specified by global property " + PrimaryCareConstants.GLOBAL_PROPERTY_PRIMARY_IDENTIFIER_TYPE);
@@ -237,6 +266,7 @@ public class PrimaryCareBusinessLogic {
         try{
             return Integer.valueOf(Context.getAdministrationService().getGlobalProperty(PrimaryCareConstants.GLOBAL_PROPERTY_BAR_CODE_COUNT));
         } catch (Exception ex ){
+        	log.error("couldn't parse or find global property registration.barCodeCount.  defaulting to 1.");
             return 1;
         }
     }
@@ -264,11 +294,14 @@ public class PrimaryCareBusinessLogic {
                     if (idAsString.length() == 0)
                         continue;
                     PatientIdentifierType idType = null;
-                    try {
-                        Integer id = Integer.valueOf(idAsString);
-                        idType = Context.getPatientService().getPatientIdentifierType(id);
-                    } catch (Exception ex){
-                        idType = Context.getPatientService().getPatientIdentifierTypeByName(idAsString);
+                    idType = Context.getPatientService().getPatientIdentifierTypeByUuid(idAsString);
+                    if (idType == null){
+	                    try {
+	                        Integer id = Integer.valueOf(idAsString);
+	                        idType = Context.getPatientService().getPatientIdentifierType(id);
+	                    } catch (Exception ex){
+	                        idType = Context.getPatientService().getPatientIdentifierTypeByName(idAsString);
+	                    }
                     }
                     if (idType == null) {
                         throw new IllegalArgumentException("Cannot find patient identifier type " + idAsString + " specified in global property " + PrimaryCareConstants.GLOBAL_PROPERTY_OTHER_IDENTIFIER_TYPES);
@@ -408,7 +441,8 @@ public class PrimaryCareBusinessLogic {
      */
     public static List<Person> getParents(Patient p){
         List<Person> ret = new ArrayList<Person>();
-        RelationshipType rt = Context.getPersonService().getRelationshipType(Integer.valueOf(Context.getAdministrationService().getGlobalProperty(PrimaryCareConstants.GLOBAL_PROPERTY_PARENT_TO_CHILD_RELATIONSHIP_TYPE)));
+      
+        RelationshipType rt = getParentRelationshipType();
         List<Relationship> rlist = Context.getPersonService().getRelationshipsByPerson(p);
         for (Relationship r: rlist){
             if (r.getRelationshipType().getRelationshipTypeId().equals(rt.getRelationshipTypeId())){
@@ -420,6 +454,23 @@ public class PrimaryCareBusinessLogic {
         return ret;
     }
     
+    
+    public static RelationshipType getParentRelationshipType(){
+    	String gp = Context.getAdministrationService().getGlobalProperty(PrimaryCareConstants.GLOBAL_PROPERTY_PARENT_TO_CHILD_RELATIONSHIP_TYPE);
+        if (gp == null)
+        	throw new RuntimeException("you must set a value for global property registration.parentChildRelationshipTypeId.");
+        RelationshipType rt = Context.getPersonService().getRelationshipTypeByUuid(gp);
+        if (rt == null){
+        	try {
+        		rt = Context.getPersonService().getRelationshipType(Integer.valueOf(gp));
+        	} catch (Exception ex){
+        		rt = Context.getPersonService().getRelationshipTypeByName(gp);
+        	}
+        	if (rt == null)
+        		throw new RuntimeException("can't parse registration.parentChildRelationshipTypeId.");
+        }
+        return rt;
+    }
     /**
      * 
      * This will void a parent relationship from the patient;
@@ -429,7 +480,7 @@ public class PrimaryCareBusinessLogic {
      */
     public static void voidParent(Patient patient, Person parent){
         
-        RelationshipType rt = Context.getPersonService().getRelationshipType(Integer.valueOf(Context.getAdministrationService().getGlobalProperty(PrimaryCareConstants.GLOBAL_PROPERTY_PARENT_TO_CHILD_RELATIONSHIP_TYPE)));
+        RelationshipType rt = getParentRelationshipType();
         List<Relationship> rlist = Context.getPersonService().getRelationshipsByPerson(patient);
         for (Relationship r: rlist){
             if (r.getRelationshipType().getRelationshipTypeId().equals(rt.getRelationshipTypeId())){
@@ -501,7 +552,15 @@ public class PrimaryCareBusinessLogic {
         String sList = Context.getAdministrationService().getGlobalProperty(PrimaryCareConstants.GLOBAL_PROPERTY_INSURANCE_TYPE_ANSWERS);
         for (StringTokenizer st = new StringTokenizer(sList, ","); st.hasMoreTokens(); ) {
             String s = st.nextToken().trim();
-            ret.add(Context.getConceptService().getConcept(Integer.valueOf(s)));
+            Concept c = Context.getConceptService().getConceptByUuid(s);
+            if (c == null){
+            	try {
+            		c = Context.getConceptService().getConcept(Integer.valueOf(s));
+            	} catch (Exception ex){
+            		throw new RuntimeException("Can't parse the global property registration.insuranceTypeConceptAnswers");
+            	}
+            }
+            ret.add(c);
         }
         return ret;
     }
@@ -573,9 +632,17 @@ public class PrimaryCareBusinessLogic {
 
 	public static Concept getBMIConcept() {
 		Concept concept = null;
-        try {
-            concept = Context.getConceptService().getConcept(Integer.valueOf(Context.getAdministrationService().getGlobalProperty("concept.bmi")));
-        } catch (Exception ex) { }
+		String gp = Context.getAdministrationService().getGlobalProperty("concept.bmi");
+		if (gp == null)
+			throw new RuntimeException("you must set the global property concept.bmi");
+		concept = Context.getConceptService().getConceptByUuid(gp);
+		if (concept == null){
+	        try {
+	            concept = Context.getConceptService().getConcept(Integer.valueOf(gp));
+	        } catch (Exception ex) { 
+	        	//pass
+	        }
+		}    
         if (concept == null) {
             throw new RuntimeException("Cannot find concept specified by global property concept.height");
         }
