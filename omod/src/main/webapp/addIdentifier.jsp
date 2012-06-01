@@ -15,7 +15,7 @@
 	
 	<spring:message code="rwandaprimarycare.touchscreen.addNumber" />
 	<c:set value="addNumber"><spring:message code='rwandaprimarycare.touchscreen.addNumber' /></c:set>
-	<touchscreen:textInput label="${addNumber}" name="identifier" required="true"/>
+	<touchscreen:textInput label="${addNumber}" field_name="identifier" required="true"/>
 	<br/>
 	
 	<input type="submit"/>

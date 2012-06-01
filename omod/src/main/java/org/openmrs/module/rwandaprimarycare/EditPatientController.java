@@ -188,7 +188,7 @@ public class EditPatientController {
 		    	}
 		    }
 	    	
-	    	if((address == null && !country.equals("")) || (address != null && (!address.getCountry().equals(country) || !address.getStateProvince().equals(province) || !address.getCountyDistrict().equals(district) || !address.getCityVillage().equals(sector) || !address.getNeighborhoodCell().equals(cell) || !address.getAddress1().equals(address1))))
+	    	if((address == null && !country.equals("")) || (address != null && ((address.getCountry() != null && !address.getCountry().equals(country)) || (address.getStateProvince() != null && !address.getStateProvince().equals(province)) || (address.getCountyDistrict() != null && !address.getCountyDistrict().equals(district)) || (address.getCityVillage() != null && !address.getCityVillage().equals(sector)) || (address.getNeighborhoodCell() != null && !address.getNeighborhoodCell().equals(cell)) || (address.getAddress1() != null && !address.getAddress1().equals(address1)))))
 	    	{
 	    		if(address != null)
 	    		{

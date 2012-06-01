@@ -39,7 +39,7 @@ public class BarCodeController {
 	    
 	    		//ensure that we're grabbing the right one; there can be multiples of the same type, at different locations:
 	    		PatientIdentifier pi = PrimaryCareBusinessLogic.getPrimaryPatientIdentifierForLocation(patient, PrimaryCareBusinessLogic.getLocationLoggedIn(request.getSession()));
-	    		model.addAttribute("id", pi.getIdentifier());	
+	    		model.addAttribute("identifier", pi.getIdentifier());	
 	    		model.addAttribute("locationName", pi.getLocation().getName().replace(" Health Center", ""));
 	    		
 		    } else if (howManyOfflineIds != null){

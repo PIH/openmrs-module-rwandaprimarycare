@@ -5,7 +5,7 @@
 	<form method="get">
 		<c:set var="enterId"><spring:message code="rwandaprimarycare.touchscreen.enterIdNumber"/></c:set>
 		<c:set var="searchStr"><spring:message code="rwandaprimarycare.touchscreen.search"/></c:set>
-		<touchscreen:textInput label="${enterId}" name="search" required="true" value="" fieldType="id"/>
+		<touchscreen:textInput label="${enterId}" field_name="search" required="true" value="" fieldType="id"/>
 		<input type="submit" value="${searchStr} }"/>
 	</form>
 </c:if>

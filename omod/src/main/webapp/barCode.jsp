@@ -12,12 +12,12 @@ P1
 
 
 <c:if test="${patient != null}">
-<!-- NOTE:  I think its important to have an extra, empty line before and after the P1 command.  This clears the printer command buffer. -->
+
 <c:forEach begin="1" end="${count}">
 
 
 N
-B35,10,0,1,1,6,40,B,"${id}"
+B35,10,0,1,1,6,40,B,"${identifier}"
 A160,10,0,3,1,1,N,"(${locationName})"
 A35,80,0,3,1,1,N,"${patient.personName.familyName} ${patient.personName.givenName}"
 A35,104,0,3,1,1,N,"<openmrs:formatDate date="${patient.birthdate}"/> ${patient.gender}"

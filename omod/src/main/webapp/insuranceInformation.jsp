@@ -19,7 +19,7 @@
 		<td></td>
 		<td>
 			<c:set var="insStr"><spring:message code='rwandaprimarycare.touchscreen.insuranceNumber'/></c:set>
-			<touchscreen:textInput   required="false" label="${insStr}"  name="insuranceNumber" value="${mostRecentInsuranceNumber}" />
+			<touchscreen:textInput   required="false" label="${insStr}"  field_name="insuranceNumber" value="${mostRecentInsuranceNumber}" />
 		</td>
 	</tr>
 	<tr>

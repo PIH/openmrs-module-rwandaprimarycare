@@ -1,8 +1,6 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="resources/touchscreenHeader.jsp"%>
 
-
-<!--<touchscreen:patientButton patient="${patient}" clickable="false"/>-->
 <br/>
 	<span>
 	<table style="position:relative;left:10%;">
@@ -61,9 +59,7 @@
 		<c:set var="bcVitals"><spring:message code="rwandaprimarycare.touchscreen.vitals"/></c:set>
 		<c:set var="bcDiagnosis"><spring:message code="rwandaprimarycare.touchscreen.diagnosis"/></c:set>
 			<touchscreen:button label="${bcVitals}" href="enterSimpleEncounter.form?form=vitals&patientId=${patient.patientId}" cssClass="green"/> <br/>
-			<!--<touchscreen:button label="${bcVitals}" href="" cssClass="gray"/> <br/>-->
-			<!--<touchscreen:button label="${bcDiagnosis}" href="enterSimpleEncounter.form?form=diagnosis&patientId=${patient.patientId}" cssClass="green"/>-->
-			<touchscreen:button label="${bcDiagnosis}" href="" cssClass="gray"/> <br/>
+		<br/>
 		</td>
 		<td align="center">
 			<c:set var="bcString"><spring:message code="rwandaprimarycare.touchscreen.printAnotherBarCode"/></c:set>

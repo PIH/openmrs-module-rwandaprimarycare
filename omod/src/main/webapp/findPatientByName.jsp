@@ -9,12 +9,12 @@
 		<tr>
 			<td>Rwandan Name</td>
 			<c:set var="rwandanName"><spring:message code='rwandaprimarycare.touchscreen.rwandanName' /></c:set>
-			<td><touchscreen:textInput required="false"  label="${rwandanName}" name="RWNAME" fieldType="upper" value="${search}" allowFreeText="true" ajaxURL="findPatientByNameAjax.form?searchType=RWNAME&search="/></td>
+			<td><touchscreen:textInput required="false"  label="${rwandanName}" field_name="RWNAME" fieldType="upper" value="${search}" allowFreeText="true" ajaxURL="findPatientByNameAjax.form?searchType=RWNAME&search="/></td>
 		</tr>
 		<tr>
 			<td>French/Ango Name</td>
 			<c:set var="christianName"><spring:message code='rwandaprimarycare.touchscreen.christianName' /></c:set>
-			<td><touchscreen:textInput required="false" label="${christianName}" name="FANAME" value="${search}" allowFreeText="true" ajaxURL="findPatientByNameAjax.form?searchType=FANAME&search="/></td>
+			<td><touchscreen:textInput required="false" label="${christianName}" field_name="FANAME" value="${search}" allowFreeText="true" ajaxURL="findPatientByNameAjax.form?searchType=FANAME&search="/></td>
 		</tr>
 			
 		<tr>
@@ -33,22 +33,22 @@
 
 			<td>Age</td>
 			<c:set var="age"><spring:message code='rwandaprimarycare.touchscreen.age' /></c:set>
-			<td><touchscreen:numberInput required="true" label="${age}" name="AGE" value="${search}" min="0" max="150"/></td>
+			<td><touchscreen:numberInput required="true" label="${age}" field_name="AGE" value="${search}" min="0" max="150"/></td>
 
 			
 		</tr>	
 		<!--<tr>
 			<td>Mother's Rwandan Name</td>
-			<td><touchscreen:textInput required="false" label="Mother's Rwandan Name" name="MRWNAME" value="${search}" allowFreeText="true" ajaxURL="findPatientByNameAjax.form?searchType=MRWNAME&search="/></td>
+			<td><touchscreen:textInput required="false" label="Mother's Rwandan Name" field_name="MRWNAME" value="${search}" allowFreeText="true" ajaxURL="findPatientByNameAjax.form?searchType=MRWNAME&search="/></td>
 		</tr>	
 		<tr>
 			<td>Father's Rwandan Name</td>
-			<td><touchscreen:textInput required="false" label="Father's Rwandan Name" name="FATHERSRWNAME" value="${search}" allowFreeText="true" ajaxURL="findPatientByNameAjax.form?searchType=FATHERSRWNAME&search="/></td>
+			<td><touchscreen:textInput required="false" label="Father's Rwandan Name" field_name="FATHERSRWNAME" value="${search}" allowFreeText="true" ajaxURL="findPatientByNameAjax.form?searchType=FATHERSRWNAME&search="/></td>
 		</tr>	-->	
 		<!--  <tr>
 			<td>Current Umudugudu</td>
 			<c:set var="umuduguduStr"><spring:message code='rwandaprimarycare.touchscreen.umudugudu' /></c:set>
-			<td><touchscreen:textInput required="false" label="${umuduguduStr}" name="UMUDUGUDU" value="${search}" allowFreeText="true" ajaxURL="findPatientByNameAjax.form?searchType=UMUDUGUDU&search=" javascriptAction="updateAddressHierarchyCache()"/></td>
+			<td><touchscreen:textInput required="false" label="${umuduguduStr}" field_name="UMUDUGUDU" value="${search}" allowFreeText="true" ajaxURL="findPatientByNameAjax.form?searchType=UMUDUGUDU&search=" javascriptAction="updateAddressHierarchyCache()"/></td>
 		</tr>	-->		
 		<tr>
 			<td>Submit</td>

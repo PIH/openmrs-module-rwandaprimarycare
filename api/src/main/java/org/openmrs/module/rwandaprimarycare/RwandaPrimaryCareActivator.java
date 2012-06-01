@@ -13,8 +13,11 @@
  */
 package org.openmrs.module.rwandaprimarycare;
 
+import java.util.Date;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.EncounterRole;
 import org.openmrs.EncounterType;
 import org.openmrs.Privilege;
 import org.openmrs.api.APIException;
@@ -70,6 +73,7 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
 	    	    Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_ENCOUNTER_TYPES);
 	    	    Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_PRIVILEGES);
 	    	    Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PRIVILEGES);
+	    	    Context.addProxyPrivilege("Manage Encounter Roles");
 	            addMetadata();
 	        } catch (Exception ex) {
 	            ex.printStackTrace();
@@ -79,6 +83,7 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
 		        Context.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_ENCOUNTER_TYPES);
 		        Context.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_PRIVILEGES);
 		        Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PRIVILEGES);
+		        Context.removeProxyPrivilege("Manage Encounter Roles");
 	            es = null;
 		        us = null;
 	            Context.closeSession();
@@ -148,6 +153,22 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
                  log.info("Created new Privilege" + p.getPrivilege());
              }
              PrimaryCareConstants.GENERATE_BULK_PRIMARY_CARE_IDS = p;
+         }
+         {
+             EncounterRole er = Context.getEncounterService().getEncounterRoleByUuid("e8a0fb6a-aba5-11e1-b9e7-002713655c9f");
+             if (er == null){
+            	 er = new EncounterRole();
+            	 er.setDescription("This role represents primrary care registration during a primary care registration encounter.");
+            	 er.setName("Primary Care Registration Recorder");
+            	 er.setUuid("e8a0fb6a-aba5-11e1-b9e7-002713655c9f");
+            	 //this is for openmrs1.9.  Awful.
+            	 er.setCreator(Context.getEncounterService().getEncounterRoleByUuid(EncounterRole.UNKNOWN_ENCOUNTER_ROLE_UUID).getCreator());
+            	 er.setDateCreated(new Date());
+            	 er.setRetired(false);	
+            	 Context.getEncounterService().saveEncounterRole(er);
+            	 log.info("Created Encounter Role representing primary care registration");
+             }
+             PrimaryCareConstants.PRIMARY_CARE_ENCOUNTER_ROLE = er;
          }
 	}
 	

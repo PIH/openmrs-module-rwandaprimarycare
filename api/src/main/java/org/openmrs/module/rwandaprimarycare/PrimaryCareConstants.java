@@ -1,5 +1,6 @@
 package org.openmrs.module.rwandaprimarycare;
 
+import org.openmrs.EncounterRole;
 import org.openmrs.EncounterType;
 import org.openmrs.Privilege;
 
@@ -10,6 +11,7 @@ public class PrimaryCareConstants {
     public static EncounterType ENCOUNTER_TYPE_DIAGNOSIS;
     public static Privilege PRINT_BARCODE_OFFLINE_PRIVILEGE;
     public static Privilege GENERATE_BULK_PRIMARY_CARE_IDS;
+    public static EncounterRole PRIMARY_CARE_ENCOUNTER_ROLE;
     public static int ageRange = 10;
     public static final String GLOBAL_PROPERTY_PRIMARY_IDENTIFIER_TYPE = "registration.primaryIdentifierType";
     public static final String GLOBAL_PROPERTY_OTHER_IDENTIFIER_TYPES = "registration.otherIdentifierTypes";

@@ -52,10 +52,10 @@ ${returnUrl}
 	<touchscreen:button label="${back}" cssClass="gray" onClick="history.back()"/>
 </c:if>
 
-<!--  
+  
 <c:set var="delete"><spring:message code="rwandaprimarycare.touchscreen.delete"/></c:set>
 <touchscreen:button label="${delete}" cssClass="red button" onClick="$j('#deleteDialog').dialog('open')"/>
--->
+
 
 <div id="deleteDialog" title="Delete encounter" align="center">
 	<c:url var="deleteUrl" value="deleteEncounter.form">

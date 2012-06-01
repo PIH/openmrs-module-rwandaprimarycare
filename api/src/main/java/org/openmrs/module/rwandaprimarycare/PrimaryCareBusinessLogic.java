@@ -25,6 +25,7 @@ import org.openmrs.Person;
 import org.openmrs.PersonAddress;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
+import org.openmrs.Provider;
 import org.openmrs.Relationship;
 import org.openmrs.RelationshipType;
 import org.openmrs.User;
@@ -82,7 +83,25 @@ public class PrimaryCareBusinessLogic {
         enc.setEncounterType(getRegistrationEncounterType());
         enc.setEncounterDatetime(datetime);
         enc.setLocation(location);
-        enc.setProvider(Context.getPersonService().getPerson(provider.getPerson().getPersonId()));
+        
+        {
+	        // wow, this sucks to have to do....
+	        Collection<Provider> provs = Context.getProviderService().getProvidersByPerson(Context.getPersonService().getPerson(provider.getPerson().getPersonId()));
+	        Provider prov = null;
+	        if (provs.size() > 0)
+	        	prov = provs.iterator().next();
+	        else {
+	        	prov = new Provider();
+	        	prov.setPerson(Context.getPersonService().getPerson(provider.getPerson().getPersonId()));
+	        	prov.setRetired(false);
+	        	prov.setIdentifier(provider.getPerson().getPersonId().toString());
+	        	prov.setDescription("provider object created by ");
+	        	prov = Context.getProviderService().saveProvider(prov);
+	        }
+	        enc.setProvider(PrimaryCareConstants.PRIMARY_CARE_ENCOUNTER_ROLE, prov);
+        }   
+        
+//        enc.setProvider(Context.getPersonService().getPerson(provider.getPerson().getPersonId()));
         enc.setPatient(patient);
         Context.getEncounterService().saveEncounter(enc);
         
@@ -140,7 +159,25 @@ public class PrimaryCareBusinessLogic {
         enc.setEncounterType(encounterType);
         enc.setEncounterDatetime(datetime);
         enc.setLocation(location);
-        enc.setProvider(Context.getPersonService().getPerson(provider.getPerson().getPersonId()));
+        
+        {
+	        // wow, this sucks to have to do....
+	        Collection<Provider> provs = Context.getProviderService().getProvidersByPerson(Context.getPersonService().getPerson(provider.getPerson().getPersonId()));
+	        Provider prov = null;
+	        if (provs.size() > 0)
+	        	prov = provs.iterator().next();
+	        else {
+	        	prov = new Provider();
+	        	prov.setPerson(Context.getPersonService().getPerson(provider.getPerson().getPersonId()));
+	        	prov.setRetired(false);
+	        	prov.setIdentifier(provider.getPerson().getPersonId().toString());
+	        	prov.setDescription("provider object created by ");
+	        	prov = Context.getProviderService().saveProvider(prov);
+	        }
+	        enc.setProvider(PrimaryCareConstants.PRIMARY_CARE_ENCOUNTER_ROLE, prov);
+        }   
+        
+        
         enc.setPatient(patient);
         for (Obs obs : observations) {
             enc.addObs(obs);
@@ -598,7 +635,7 @@ public class PrimaryCareBusinessLogic {
         PersonAttributeType pat = PrimaryCareUtil.getHealthCenterAttributeType();
         PersonAttribute paTmp = p.getAttribute(pat);
         
-        if (paTmp == null || !paTmp.getValue().equals(String.valueOf(location.getLocationId()))){
+        if (location != null && (paTmp == null || !paTmp.getValue().equals(String.valueOf(location.getLocationId())))){
             PersonAttribute pa = PrimaryCareUtil.newPersonAttribute(pat,location.getLocationId().toString(), p);
             p.addAttribute(pa);
             return Context.getPatientService().savePatient(p);
