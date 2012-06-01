@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
 
 <%@ attribute name="label" required="true" rtexprvalue="true" %>
-<%@ attribute name="name" required="false" rtexprvalue="true" %>
+<%@ attribute name="field_name" required="false" rtexprvalue="true" %>
 <%@ attribute name="value" required="false" rtexprvalue="true" %>
 <%@ attribute name="ajaxURL" required="false" rtexprvalue="true" %>
 <%@ attribute name="javascriptAction" required="false" rtexprvalue="true" %>
@@ -13,7 +13,7 @@
 <input
 	helpText="${label}"
 	type="text"
-	name="${name}"
+	name="${field_name}"
 	value="${value}"
 	autocomplete="off"
 	<c:if test="${not empty ajaxURL}">

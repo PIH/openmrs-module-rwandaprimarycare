@@ -37,9 +37,9 @@
 				    <c:if test="${maxResults != null && fn:length(patients) > maxResults}">
 					<table>
 						<tr><Td style="width: 70px;">
-								<touchscreen:button onClick="toggle(-1)" label="&lt;&lt;" cssClass="dark" id="backLink" disabled="true"/>
+								<touchscreen:button onClick="toggle(-1)" label="&lt;&lt;" cssClass="dark" dom_element_id="backLink" disabled="true"/>
 						</td><td>
-								<touchscreen:button onClick="toggle(1)" label="&gt;&gt;" cssClass="dark" id="nextLink"/>
+								<touchscreen:button onClick="toggle(1)" label="&gt;&gt;" cssClass="dark" dom_element_id="nextLink"/>
 						</td>	
 						</tr>
 						<tr><td colspan="2" id=""><span id="recordSpan" class="bigtext"></span></td><tr>	
