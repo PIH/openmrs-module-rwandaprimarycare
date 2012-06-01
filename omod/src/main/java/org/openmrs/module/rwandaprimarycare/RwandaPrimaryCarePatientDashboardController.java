@@ -79,8 +79,10 @@ public class RwandaPrimaryCarePatientDashboardController {
 	        if (needIDForThisLocation){
 	            try {
 	                String addIdentifier = PrimaryCareBusinessLogic.getNewPrimaryIdentifierString();
-	                patient.addIdentifier(new PatientIdentifier(addIdentifier,
-	                        PrimaryCareBusinessLogic.getPrimaryPatientIdentiferType(), PrimaryCareWebLogic.getCurrentLocation(session)));
+	                PatientIdentifier pi = new PatientIdentifier(addIdentifier,
+	                        PrimaryCareBusinessLogic.getPrimaryPatientIdentiferType(), PrimaryCareWebLogic.getCurrentLocation(session));
+	                pi.setPreferred(true);
+	                patient.addIdentifier(pi);
 	                patient = Context.getPatientService().savePatient(patient);
 	            } catch (Exception ex){
 	                ex.printStackTrace(System.out);

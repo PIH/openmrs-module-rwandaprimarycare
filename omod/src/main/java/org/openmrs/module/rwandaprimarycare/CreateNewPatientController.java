@@ -168,7 +168,9 @@ public class CreateNewPatientController {
 	                    if (Context.getPatientService().getPatients(null, addPCIdentifier, Collections.singletonList(PrimaryCareBusinessLogic.getPrimaryPatientIdentiferType()), true).size() == 0){
 	                        //if the ID's 3 digits correspond to the current location:
 	                        if (addPCIdentifier.substring(0, 3).equals(PrimaryCareUtil.getPrimaryCareLocationCode())){
-	                            newPatient.addIdentifier(new PatientIdentifier(addPCIdentifier,PrimaryCareBusinessLogic.getPrimaryPatientIdentiferType(), PrimaryCareWebLogic.getCurrentLocation(session)));
+	                        	PatientIdentifier pi = new PatientIdentifier(addPCIdentifier,PrimaryCareBusinessLogic.getPrimaryPatientIdentiferType(), PrimaryCareWebLogic.getCurrentLocation(session));
+	                        	pi.setPreferred(true);
+	                            newPatient.addIdentifier(pi);
 	                            newIdNeeded = false;
 	                        } else {
 	                            
@@ -176,7 +178,9 @@ public class CreateNewPatientController {
 	                            //case:  we can find a location out of our location list for this id:
 	                            Location thisIdsLocation = PrimaryCareUtil.getPrimaryCareLocationFromCodeList(addPCIdentifier.substring(0, 3));
 	                            if (thisIdsLocation != null){
-	                                newPatient.addIdentifier(new PatientIdentifier(addPCIdentifier,PrimaryCareBusinessLogic.getPrimaryPatientIdentiferType(), thisIdsLocation));
+	                            	PatientIdentifier pi = new PatientIdentifier(addPCIdentifier,PrimaryCareBusinessLogic.getPrimaryPatientIdentiferType(), thisIdsLocation);
+	                            	pi.setPreferred(true);
+	                                newPatient.addIdentifier(pi);
 	                            } else {
 	                                //case:  we can't find a location out of our location list for this id:
 	                                //TODO:  when id.location stops being mandatory, we can create...
@@ -190,8 +194,9 @@ public class CreateNewPatientController {
 	            }            
 	            if (newIdNeeded){
 	                String addIdentifier = PrimaryCareBusinessLogic.getNewPrimaryIdentifierString();
-	                newPatient.addIdentifier(new PatientIdentifier(addIdentifier,
-	                        PrimaryCareBusinessLogic.getPrimaryPatientIdentiferType(), PrimaryCareWebLogic.getCurrentLocation(session)));
+	                PatientIdentifier pi = new PatientIdentifier(addIdentifier, PrimaryCareBusinessLogic.getPrimaryPatientIdentiferType(), PrimaryCareWebLogic.getCurrentLocation(session));
+	                pi.setPreferred(true);
+	                newPatient.addIdentifier(pi);
 	            }
 	        
 	        
