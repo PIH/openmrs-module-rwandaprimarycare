@@ -113,7 +113,7 @@ public class EnterSimpleEncounterController {
     	//So that errors will be directed to a touch screen error page
     	try{
     	
-	    	Patient patient = new Patient(patientId);
+	    	Patient patient = getPatient(patientId);
 	        Location workstationLocation = PrimaryCareBusinessLogic.getLocationLoggedIn(session);
 	        EncounterType encounterType = Context.getEncounterService().getEncounterType(encounterTypeId);
 	        if (encounterType == null)

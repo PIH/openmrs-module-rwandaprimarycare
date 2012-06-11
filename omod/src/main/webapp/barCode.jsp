@@ -6,13 +6,15 @@ response.setHeader("Content-Disposition", "attachment; filename=\"barCode.epl\""
 <%@ include file="/WEB-INF/template/include.jsp"%>
 
 
+<c:if test="${!empty introLabelEPL}">
+
 N
 ${introLabelEPL}
 P1
 
+</c:if>
 
 <c:if test="${patient != null}">
-
 <c:forEach begin="1" end="${count}">
 
 

@@ -142,16 +142,18 @@ public class FindPatientByNameController {
 	            //hack:parse out addresshierarchyids:
 	            ArrayList<Map<String,String>> idMaps = new ArrayList<Map<String,String>>();
 	            List<String> retList = new ArrayList<String>();
-	            for (String s:list){
-	                if (s.contains("|")){
-	                    Map<String,String> nameAndIdMap = new HashMap<String, String>();
-	                    int pos = s.indexOf("|");
-	                    nameAndIdMap.put("id", s.substring(0,pos));
-	                    nameAndIdMap.put("name", s.substring(pos+1));
-	                    idMaps.add(nameAndIdMap);
-	                    s = s.substring(pos+1);
-	                }
-	                retList.add(s);
+	            if (list != null){
+		            for (String s:list){
+		                if (s.contains("|")){
+		                    Map<String,String> nameAndIdMap = new HashMap<String, String>();
+		                    int pos = s.indexOf("|");
+		                    nameAndIdMap.put("id", s.substring(0,pos));
+		                    nameAndIdMap.put("name", s.substring(pos+1));
+		                    idMaps.add(nameAndIdMap);
+		                    s = s.substring(pos+1);
+		                }
+		                retList.add(s);
+		            }
 	            }
 	            model.addAttribute("idmaps", idMaps);
 	            model.addAttribute("search", search);

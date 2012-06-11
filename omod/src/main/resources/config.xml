@@ -11,7 +11,7 @@
 			rendering library, as well as barcode printing.
 	</description>
 	<activator>@MODULE_PACKAGE@.RwandaPrimaryCareActivator</activator>
-	<!-- /Rwanda Primary Care Module Properties -->
+	<require_version>1.9</require_version>
 	
 	<require_modules>
 		<require_module>org.openmrs.module.addresshierarchyrwanda</require_module>

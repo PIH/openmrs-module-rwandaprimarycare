@@ -198,7 +198,7 @@ public class RwandaPrimaryCarePatientDashboardController {
     	try{
 	    	//note:  this adds the registration encounter.  NOTE:  provider in the created encounter is the registration clerk.
 	        PrimaryCareBusinessLogic.patientSeen(
-	                        new Patient(patientId),
+	                        Context.getPatientService().getPatient(patientId),
 	                        (Location) session.getAttribute(PrimaryCareConstants.SESSION_ATTRIBUTE_WORKSTATION_LOCATION),
 	                        new Date(), Context.getAuthenticatedUser());
 	        return "redirect:/module/rwandaprimarycare/patient.form?patientId=" + patientId + "&printBarCode=true&serviceRequested=0";

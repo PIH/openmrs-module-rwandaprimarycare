@@ -39,11 +39,11 @@ public class PrimaryCareServiceImpl extends BaseOpenmrsService implements Primar
     		results = dao.getPatientGivenNamesList(search); //FANAME = given_name
     	} else if (searchType == PatientSearchType.RWNAME) {
     		results = dao.getPatientFamilyNamesList(search);  //RWNAME = family_name
-    	}else if (searchType == PatientSearchType.MRWNAME && Context.getPersonService().getPersonAttributeTypeByName(PrimaryCareConstants.MOTHER_NAME_ATTRIBUTE_TYPE) != null) {
+    	} else if (searchType == PatientSearchType.MRWNAME && Context.getPersonService().getPersonAttributeTypeByName(PrimaryCareConstants.MOTHER_NAME_ATTRIBUTE_TYPE) != null) {
     		results = dao.getPatientFamilyNamesList(search);  //MRWNAME = Mother's family_name
     		PersonAttributeType motherNameAttributeType = Context.getPersonService().getPersonAttributeTypeByName(PrimaryCareConstants.MOTHER_NAME_ATTRIBUTE_TYPE);
     		results.addAll(dao.getParentsFamilyNamesList(search,motherNameAttributeType.getPersonAttributeTypeId()));
-    	}else if (searchType == PatientSearchType.FATHERSRWNAME && Context.getPersonService().getPersonAttributeTypeByName(PrimaryCareConstants.FATHER_NAME_ATTRIBUTE_TYPE) != null) {
+    	} else if (searchType == PatientSearchType.FATHERSRWNAME && Context.getPersonService().getPersonAttributeTypeByName(PrimaryCareConstants.FATHER_NAME_ATTRIBUTE_TYPE) != null) {
     		results = dao.getPatientFamilyNamesList(search);  //FATHERSRWNAME = Father's family_name
     		PersonAttributeType fatherNameAttributeType = Context.getPersonService().getPersonAttributeTypeByName(PrimaryCareConstants.FATHER_NAME_ATTRIBUTE_TYPE);
     		results.addAll(dao.getParentsFamilyNamesList(search,fatherNameAttributeType.getPersonAttributeTypeId()));
