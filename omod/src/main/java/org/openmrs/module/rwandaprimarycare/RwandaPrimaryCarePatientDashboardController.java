@@ -184,6 +184,11 @@ public class RwandaPrimaryCarePatientDashboardController {
 	                registrationEncounterToday = Context.getEncounterService().saveEncounter(registrationEncounterToday);
 	            }
 	        }
+	        //TODO: use this to allow link to diagnosis capture app.  I haven't hooked up the jsps yet. 
+	        Object o = session.getAttribute(PrimaryCareConstants.SESSION_ATTRIBUTE_DIAGNOSIS_LOCATION_CODE);
+	        if (o != null)
+	        	model.addAttribute("showDiagnosisLink", Boolean.TRUE);
+	        
     	} catch(Exception e)
     	{
     		throw new PrimaryCareException(e);

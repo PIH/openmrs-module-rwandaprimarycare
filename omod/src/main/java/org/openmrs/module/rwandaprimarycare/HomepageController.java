@@ -52,7 +52,7 @@ public class HomepageController {
 	        
 	        model.addAttribute(recent);
 	        
-	        //NOTE:  this is for a lazy loading exception;  its total shit code:
+	        //NOTE:  this is for a lazy loading exception
 	        PersonService ps = Context.getPersonService();
 	        for (Patient p : recent.getList()){
 	            for (PersonAttribute pa : p.getActiveAttributes()){
@@ -60,6 +60,12 @@ public class HomepageController {
 	                pa.setAttributeType(pat);
 	            }
 	        }
+	        
+	        //TODO: use this to allow link to diagnosis capture app.  I haven't hooked up the jsps yet. 
+	        Object o = session.getAttribute(PrimaryCareConstants.SESSION_ATTRIBUTE_DIAGNOSIS_LOCATION_CODE);
+	        if (o != null)
+	        	model.addAttribute("showDiagnosisLink", Boolean.TRUE);
+	        
 	        PrimaryCareWebLogic.clearSessionSearchAttributes(session);
     	} catch(Exception e)
     	{

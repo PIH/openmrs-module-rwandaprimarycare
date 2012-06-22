@@ -33,11 +33,11 @@ public class PrimaryCareConstants {
     public static final String GLOBAL_PROPERTY_DEFAULT_LOCATION_CODE = "registration.defaultLocationCode";
     public static final String VOLATILE_USER_DATA_LOGIN_LOCATION = "userLocation";
     
-    
     public static final String GLOBAL_PROPERTY_INSURANCE_TYPE = "registration.insuranceTypeConcept";
     public static final String GLOBAL_PROPERTY_INSURANCE_NUMBER = "registration.insuranceNumberConcept";
     public static final String GLOBAL_PROPERTY_NATIONAL_ID_TYPE = "registration.nationalIdType";
     public static final String SESSION_ATTRIBUTE_WORKSTATION_LOCATION = "primaryCareWorkstationLocation";
+    public static final String SESSION_ATTRIBUTE_DIAGNOSIS_LOCATION_CODE = "diagnosisWorkstationLocation";
     public static final String GLOBAL_PROPERTY_HEALTH_CENTER_ATTRIBUTE_TYPE = "registration.healthCenterPersonAttribute";
     public static final String GLOBAL_PROPERTY_INSURANCE_TYPE_ANSWERS = "registration.insuranceTypeConceptAnswers";
     public static final String GLOBAL_PROPERTY_MOTHERS_NAME_CONCEPT = "registration.mothersNameConceptId";
