@@ -12,6 +12,13 @@
 			<c:set var="editPatient"><spring:message code="rwandaprimarycare.touchscreen.edit"/></c:set>
 			<touchscreen:button label="${editPatient}" href="editPatient.form?patientId=${patient.patientId}" cssClass="green"/>
 		</td>
+		<!-- this is here so that providers who see the diagnosis capture app can jump between registration and diagnoses -->
+		<c:if test="${!empty showDiagnosisLink}">
+			<c:set var="goToDiagnosisApp"><spring:message code="rwandaprimarycare.goToDiagnosisApplication"/></c:set>
+			<td align="center">
+				<touchscreen:button label="${goToDiagnosisApp}" href="${pageContext.request.contextPath}/module/diagnosiscapturerwanda/diagnosisPatientDashboard.list?patientId=${patient.patientId}"/>
+			</td>	
+		</c:if>
 	</tr>
 	</table>
 	</span>

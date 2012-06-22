@@ -20,6 +20,7 @@
 	<c:set var="offlinePrinting"><spring:message code="rwandaprimarycare.offlineBarcodePrinting"/></c:set>
 	<c:set var="bulkIdGeneration"><spring:message code="rwandaprimarycare.bulkIdGeneration"/></c:set>
 	<c:set var="myPropertiesStr"><spring:message code="rwandaprimarycare.touchscreen.myProperties"/></c:set>
+	<c:set var="goToDiagnosisApp"><spring:message code="rwandaprimarycare.goToDiagnosisApplication"/></c:set>
 	
 	
 	<touchscreen:button label="${searchByIdStr}" href="findPatientById.form"/>
@@ -37,6 +38,11 @@
 		<touchscreen:button label="${bulkIdGeneration}" href="bulkGenerateIds.form"/>
 	</openmrs:hasPrivilege>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<!-- this is here so that providers who see the diagnosis capture app can jump between registration and diagnoses -->
+	<c:if test="${!empty showDiagnosisLink}">
+		<touchscreen:button label="${goToDiagnosisApp}" href="${pageContext.request.contextPath}/module/diagnosiscapturerwanda/diagnosisHomepage.list"/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</c:if>
 	
 	
 	<touchscreen:button label="${myPropertiesStr}" href="myProperties.form"/>
