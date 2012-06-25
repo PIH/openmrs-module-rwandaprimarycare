@@ -72,7 +72,7 @@ public class ManageIdentifiersController {
 	        Patient patient = Context.getPatientService().getPatient(patientId);
 	        patient.addIdentifier(id);
 	        try {
-	            Context.getPatientService().savePatient(patient);
+	        	PrimaryCareBusinessLogic.preferredIdentifierSafeSavePatient(patient);
 	        } catch (Exception ex) {
 	            log.warn("Error trying to add a patient identifier", ex);
 	            session.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, ex.getMessage());
@@ -106,7 +106,7 @@ public class ManageIdentifiersController {
 	                }
 	            }
 	            if (didAnything) {
-	                Context.getPatientService().savePatient(patient);
+	            	PrimaryCareBusinessLogic.preferredIdentifierSafeSavePatient(patient);
 	            }
 	        } else {
 	            MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService().getActiveMessageSource());

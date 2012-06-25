@@ -638,9 +638,36 @@ public class PrimaryCareBusinessLogic {
         if (location != null && (paTmp == null || !paTmp.getValue().equals(String.valueOf(location.getLocationId())))){
             PersonAttribute pa = PrimaryCareUtil.newPersonAttribute(pat,location.getLocationId().toString(), p);
             p.addAttribute(pa);
-            return Context.getPatientService().savePatient(p);
+            //argh.. check for preferred identifier for validator:
+
+            return preferredIdentifierSafeSavePatient(p);
         }
         return p;
+    }
+    
+    /**
+     * Use this to save patients to ensure there's a preferred identifier
+     * @param p
+     * @return
+     */
+    public static Patient preferredIdentifierSafeSavePatient(Patient p){
+    	//if there's a preferred patient, just save the patient and return
+    	for (PatientIdentifier pi : p.getActiveIdentifiers()){
+    		if (pi.getPreferred())
+    			return Context.getPatientService().savePatient(p);
+    	}
+    	//else, find primary care identifier and set that as preferred
+    	PatientIdentifier pi = p.getPatientIdentifier(getPrimaryPatientIdentiferType());
+    	if (pi != null){
+    		pi.setPreferred(true);
+    	} else { //set the first identifier as preferred
+    		try {
+    			p.getActiveIdentifiers().get(0).setPreferred(true);
+    		} catch (Exception ex){
+    			//there are no identifiers on this patient!
+    		}	
+    	}
+    	return Context.getPatientService().savePatient(p);
     }
     
     public static boolean doesPatientNeedAnIDForThisLocation(Patient patient, Location location){

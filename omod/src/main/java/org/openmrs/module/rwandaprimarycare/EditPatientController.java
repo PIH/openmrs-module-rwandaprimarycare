@@ -221,7 +221,7 @@ public class EditPatientController {
 				}
 				
 				if ((mother == null && !mothersName.equals(""))) {
-					Context.getPatientService().savePatient(patient);
+					PrimaryCareBusinessLogic.preferredIdentifierSafeSavePatient(patient);
 					saveRequired = false;
 					
 					mother = setupParent(mothersName, "F");
@@ -243,7 +243,7 @@ public class EditPatientController {
 				
 				if ((father == null && !fathersName.equals(""))) {
 					if (saveRequired) {
-						Context.getPatientService().savePatient(patient);
+						PrimaryCareBusinessLogic.preferredIdentifierSafeSavePatient(patient);
 						saveRequired = false;
 					}
 					
@@ -266,7 +266,7 @@ public class EditPatientController {
 				}
 				
 				if (saveRequired) {
-					Context.getPatientService().savePatient(patient);
+					PrimaryCareBusinessLogic.preferredIdentifierSafeSavePatient(patient);
 				}
 			} else {
     		//use attributes if we don't have parents as persons
@@ -277,7 +277,7 @@ public class EditPatientController {
     		 else{
     				PrimaryCareUtil.setupParentNames(patient,mothersName,fathersName);
     		 }
-    		Context.getPatientService().savePatient(patient);
+    		 PrimaryCareBusinessLogic.preferredIdentifierSafeSavePatient(patient);
     	}
 	        return "redirect:/module/rwandaprimarycare/patient.form?skipPresentQuestion=true&patientId=" + patientId;
     	} catch(Exception e)

@@ -112,7 +112,6 @@
 			The number of barcodes to print at a time, when printing barcodes.
 		</description>
 	</globalProperty>
-	
 	<globalProperty>
 		<property>registration.insuranceTypeConcept</property>
 		<defaultValue></defaultValue>

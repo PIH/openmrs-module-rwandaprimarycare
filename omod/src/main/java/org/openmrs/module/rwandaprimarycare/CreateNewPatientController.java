@@ -231,7 +231,7 @@ public class CreateNewPatientController {
 	        }
 	        try {         	
 	        	PrimaryCareUtil.setupParentNames(newPatient,mothersName,fathersName);
-	            Context.getPatientService().savePatient(newPatient);
+	            PrimaryCareBusinessLogic.preferredIdentifierSafeSavePatient(newPatient);
 	        } catch (IdentifierNotUniqueException ex){
 	            MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService().getActiveMessageSource());
 	            session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, msa.getMessage("rwandaprimarycare.idAlreadyUsed"));

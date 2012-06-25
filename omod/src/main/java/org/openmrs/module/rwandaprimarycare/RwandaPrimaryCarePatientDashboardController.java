@@ -83,7 +83,7 @@ public class RwandaPrimaryCarePatientDashboardController {
 	                        PrimaryCareBusinessLogic.getPrimaryPatientIdentiferType(), PrimaryCareWebLogic.getCurrentLocation(session));
 	                pi.setPreferred(true);
 	                patient.addIdentifier(pi);
-	                patient = Context.getPatientService().savePatient(patient);
+	                patient = PrimaryCareBusinessLogic.preferredIdentifierSafeSavePatient(patient);
 	            } catch (Exception ex){
 	                ex.printStackTrace(System.out);
 	                log.error("Could not create a primary id for patient: " + ex.getMessage() );
@@ -188,6 +188,8 @@ public class RwandaPrimaryCarePatientDashboardController {
 	        Object o = session.getAttribute(PrimaryCareConstants.SESSION_ATTRIBUTE_DIAGNOSIS_LOCATION_CODE);
 	        if (o != null)
 	        	model.addAttribute("showDiagnosisLink", Boolean.TRUE);
+	        if (registrationEncounterToday != null)
+	        	model.addAttribute("registrationEncounterToday", registrationEncounterToday);
 	        
     	} catch(Exception e)
     	{
