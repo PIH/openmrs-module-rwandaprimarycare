@@ -133,7 +133,7 @@ public class RwandaPrimaryCarePatientDashboardController {
 	            return "/module/rwandaprimarycare/patientIsPresent";
 	        
 	        // show the print bar code dialogue if needed
-	        if(printBarCode == true)
+	        if (printBarCode == true)
 	        	return "/module/rwandaprimarycare/printBarCode";
 	        
 	        if (serviceRequested != null && serviceRequested.equals(0)){
@@ -148,12 +148,29 @@ public class RwandaPrimaryCarePatientDashboardController {
 	        }   
 	        
 	        if (serviceRequestResponse != null && registrationEncounterToday != null){
+	        	Concept c = PrimaryCareUtil.getServiceRequestedConcept();
+	        	//create new obs if necessary
 	            if (!PrimaryCareUtil.doesEncounterContainObsWithConcept(registrationEncounterToday, PrimaryCareUtil.getServiceRequestedConcept())){
-	                Concept c = PrimaryCareUtil.getServiceRequestedConcept();
 	                Obs o = PrimaryCareUtil.newObs(patient, c, registrationEncounterToday.getEncounterDatetime(), PrimaryCareBusinessLogic.getLocationLoggedIn(session));
 	                o.setValueCoded(Context.getConceptService().getConcept(serviceRequestResponse));
 	                registrationEncounterToday.addObs(o);
 	                registrationEncounterToday = Context.getEncounterService().saveEncounter(registrationEncounterToday);
+	            } else {
+	            	//edit existing obs
+	            	int count = 0;
+	            	for (Obs o : registrationEncounterToday.getObs()){
+	            		if (o.getConcept().equals(c)){
+	            			if (count == 0){
+	            				//update the service
+		            			o.setValueCoded(Context.getConceptService().getConcept(serviceRequestResponse));
+		            			registrationEncounterToday = Context.getEncounterService().saveEncounter(registrationEncounterToday);
+	            			} else {
+	            				//void the duplicate
+	            				Context.getObsService().voidObs(o, "duplicate service requested in touchscreen app");
+	            			}
+	            			 count ++;
+	            		}
+	            	}
 	            }
 	        }
 	        
@@ -167,7 +184,17 @@ public class RwandaPrimaryCarePatientDashboardController {
 	        }    
 	
 	        if (insuranceType != null && registrationEncounterToday != null){
-	            if (!PrimaryCareUtil.doesEncounterContainObsWithConcept(registrationEncounterToday, PrimaryCareUtil.getInsuranceTypeConcept())){
+	        		System.out.println("HERE!");
+	            	//for edit, just void
+	            	for (Obs o : registrationEncounterToday.getObs()){
+	            		if (o.getConcept().equals(PrimaryCareUtil.getInsuranceTypeConcept())){
+	            			Context.getObsService().voidObs(o, "edited through touchscreen UI");
+	            		}
+	            		if (o.getConcept().equals(PrimaryCareUtil.getInsuranceNumberConcept())){
+	            			Context.getObsService().voidObs(o, "edited through touchscreen UI");
+	            		}
+	            	}
+	            	//and then recreate.
 	                Obs insType = PrimaryCareUtil.newObs(patient, PrimaryCareUtil.getInsuranceTypeConcept(), registrationEncounterToday.getEncounterDatetime(), PrimaryCareBusinessLogic.getLocationLoggedIn(session));
 	                insType.setValueCoded(Context.getConceptService().getConcept(insuranceType));
 	                
@@ -176,13 +203,13 @@ public class RwandaPrimaryCarePatientDashboardController {
 	                    insNum = PrimaryCareUtil.newObs(patient, PrimaryCareUtil.getInsuranceNumberConcept(), registrationEncounterToday.getEncounterDatetime(), PrimaryCareBusinessLogic.getLocationLoggedIn(session));
 	                    insNum.setValueText(insuranceNumber);
 	                }
-	                //TODO: the concept set thing doesn't work -- add g.p.??
 	    
 	                if (insNum != null)
 	                    registrationEncounterToday.addObs(insNum);
 	                registrationEncounterToday.addObs(insType);
+	                
 	                registrationEncounterToday = Context.getEncounterService().saveEncounter(registrationEncounterToday);
-	            }
+
 	        }
 	        //TODO: use this to allow link to diagnosis capture app.  I haven't hooked up the jsps yet. 
 	        Object o = session.getAttribute(PrimaryCareConstants.SESSION_ATTRIBUTE_DIAGNOSIS_LOCATION_CODE);
@@ -190,7 +217,7 @@ public class RwandaPrimaryCarePatientDashboardController {
 	        	model.addAttribute("showDiagnosisLink", Boolean.TRUE);
 	        if (registrationEncounterToday != null)
 	        	model.addAttribute("registrationEncounterToday", registrationEncounterToday);
-	        
+	        model.addAttribute("registrationEncounterType", PrimaryCareBusinessLogic.getRegistrationEncounterType());
     	} catch(Exception e)
     	{
     		throw new PrimaryCareException(e);

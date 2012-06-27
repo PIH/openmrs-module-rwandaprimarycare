@@ -24,6 +24,7 @@ public class ViewEncounterController {
 	        model.addAttribute(encounter);
 	        model.addAttribute(encounter.getPatient());
 	        model.addAttribute("returnUrl", returnUrl);
+	        model.addAttribute("registrationEncounterType", PrimaryCareBusinessLogic.getRegistrationEncounterType());
     	} catch(Exception e)
     	{
     		throw new PrimaryCareException(e);

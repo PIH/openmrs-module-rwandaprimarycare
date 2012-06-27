@@ -80,27 +80,27 @@ public class EnterSimpleEncounterController {
     }
 
     
-    @RequestMapping(method=RequestMethod.GET, params="form=diagnosis")
-    public String setupDiagnosisForm(@RequestParam("patientId") Integer patientId, ModelMap model) throws PrimaryCareException {
-    	//LK: Need to ensure that all primary care methods only throw a PrimaryCareException
-    	//So that errors will be directed to a touch screen error page
-    	try{
-    	
-	    	Patient patient = getPatient(patientId);
-	        model.addAttribute(patient);
-	        model.addAttribute("encounterType", PrimaryCareConstants.ENCOUNTER_TYPE_DIAGNOSIS);
-	        List<Question> questions = new ArrayList<Question>();
-	        MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService().getActiveMessageSource());
-	        questions.add(new Question(msa.getMessage("rwandaprimarycare.diagnosis1"), PrimaryCareBusinessLogic.getDiagnosisNonCodedConcept(), true));
-	        questions.add(new Question(msa.getMessage("rwandaprimarycare.diagnosis2"), PrimaryCareBusinessLogic.getDiagnosisNonCodedConcept(), false));
-	        questions.add(new Question(msa.getMessage("rwandaprimarycare.diagnosis3"), PrimaryCareBusinessLogic.getDiagnosisNonCodedConcept(), false));
-	        model.addAttribute("questions", questions);
-    	} catch(Exception e)
-    	{
-    		throw new PrimaryCareException(e);
-    	}  
-        return "/module/rwandaprimarycare/enterSimpleEncounter";
-    }
+//    @RequestMapping(method=RequestMethod.GET, params="form=diagnosis")
+//    public String setupDiagnosisForm(@RequestParam("patientId") Integer patientId, ModelMap model) throws PrimaryCareException {
+//    	//LK: Need to ensure that all primary care methods only throw a PrimaryCareException
+//    	//So that errors will be directed to a touch screen error page
+//    	try{
+//    	
+//	    	Patient patient = getPatient(patientId);
+//	        model.addAttribute(patient);
+//	        model.addAttribute("encounterType", PrimaryCareConstants.ENCOUNTER_TYPE_DIAGNOSIS);
+//	        List<Question> questions = new ArrayList<Question>();
+//	        MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService().getActiveMessageSource());
+//	        questions.add(new Question(msa.getMessage("rwandaprimarycare.diagnosis1"), PrimaryCareBusinessLogic.getDiagnosisNonCodedConcept(), true));
+//	        questions.add(new Question(msa.getMessage("rwandaprimarycare.diagnosis2"), PrimaryCareBusinessLogic.getDiagnosisNonCodedConcept(), false));
+//	        questions.add(new Question(msa.getMessage("rwandaprimarycare.diagnosis3"), PrimaryCareB	usinessLogic.getDiagnosisNonCodedConcept(), false));
+//	        model.addAttribute("questions", questions);
+//    	} catch(Exception e)
+//    	{
+//    		throw new PrimaryCareException(e);
+//    	}  
+//        return "/module/rwandaprimarycare/enterSimpleEncounter";
+//    }
 
     @RequestMapping(method=RequestMethod.POST)
     public String processSubmit(
@@ -135,7 +135,7 @@ public class EnterSimpleEncounterController {
 	            try {
 	                obs.setValueAsString(value);
 	            } catch (ParseException ex) {
-	                throw new IllegalArgumentException("Cannot set " + obs.getConcept().getBestName(Context.getLocale()) + " to " + value);
+	                throw new IllegalArgumentException("Cannot set " + obs.getConcept().getName(Context.getLocale()).getName() + " to " + value);
 	            }
 	            obsToCreate.add(obs);
 	        }

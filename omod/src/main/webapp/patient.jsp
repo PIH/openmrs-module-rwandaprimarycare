@@ -58,6 +58,12 @@
 								</c:if>
 					
 						</td>
+						<td>
+								<c:set var="edit"><spring:message code="rwandaprimarycare.edit"/></c:set>
+								<c:if test="${encounter.encounterType == registrationEncounterType}">
+										<touchscreen:button label="${edit}" href="${pageContext.request.contextPath}/module/rwandaprimarycare/patient.form?patientId=${patient.patientId}&serviceRequested=0"/>	
+								</c:if>
+						</td>
 					</tr>
 				</c:forEach>
 			</table>
