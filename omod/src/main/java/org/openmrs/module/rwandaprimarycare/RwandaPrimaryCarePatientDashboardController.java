@@ -154,7 +154,7 @@ public class RwandaPrimaryCarePatientDashboardController {
 	                Obs o = PrimaryCareUtil.newObs(patient, c, registrationEncounterToday.getEncounterDatetime(), PrimaryCareBusinessLogic.getLocationLoggedIn(session));
 	                o.setValueCoded(Context.getConceptService().getConcept(serviceRequestResponse));
 	                registrationEncounterToday.addObs(o);
-	                registrationEncounterToday = Context.getEncounterService().saveEncounter(registrationEncounterToday);
+	                registrationEncounterToday = PrimaryCareBusinessLogic.saveEncounterAndVerifyVisit(registrationEncounterToday);
 	            } else {
 	            	//edit existing obs
 	            	int count = 0;
@@ -163,7 +163,7 @@ public class RwandaPrimaryCarePatientDashboardController {
 	            			if (count == 0){
 	            				//update the service
 		            			o.setValueCoded(Context.getConceptService().getConcept(serviceRequestResponse));
-		            			registrationEncounterToday = Context.getEncounterService().saveEncounter(registrationEncounterToday);
+		            			registrationEncounterToday = PrimaryCareBusinessLogic.saveEncounterAndVerifyVisit(registrationEncounterToday);
 	            			} else {
 	            				//void the duplicate
 	            				Context.getObsService().voidObs(o, "duplicate service requested in touchscreen app");
@@ -208,7 +208,7 @@ public class RwandaPrimaryCarePatientDashboardController {
 	                    registrationEncounterToday.addObs(insNum);
 	                registrationEncounterToday.addObs(insType);
 	                
-	                registrationEncounterToday = Context.getEncounterService().saveEncounter(registrationEncounterToday);
+	                registrationEncounterToday = PrimaryCareBusinessLogic.saveEncounterAndVerifyVisit(registrationEncounterToday);
 
 	        }
 	        //TODO: use this to allow link to diagnosis capture app.  I haven't hooked up the jsps yet. 
