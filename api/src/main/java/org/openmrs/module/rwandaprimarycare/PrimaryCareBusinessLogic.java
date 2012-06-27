@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpSession;
@@ -29,6 +30,9 @@ import org.openmrs.Provider;
 import org.openmrs.Relationship;
 import org.openmrs.RelationshipType;
 import org.openmrs.User;
+import org.openmrs.Visit;
+import org.openmrs.VisitAttributeType;
+import org.openmrs.VisitType;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.idgen.IdentifierSource;
 import org.openmrs.module.idgen.service.IdentifierSourceService;
@@ -103,7 +107,7 @@ public class PrimaryCareBusinessLogic {
         
 //        enc.setProvider(Context.getPersonService().getPerson(provider.getPerson().getPersonId()));
         enc.setPatient(patient);
-        Context.getEncounterService().saveEncounter(enc);
+        PrimaryCareBusinessLogic.saveEncounterAndVerifyVisit(enc);
         
         
         return enc;
@@ -126,7 +130,7 @@ public class PrimaryCareBusinessLogic {
             for (Obs obs : observations) {
                 enc.addObs(obs);
             }
-            Context.getEncounterService().saveEncounter(enc);
+            PrimaryCareBusinessLogic.saveEncounterAndVerifyVisit(enc);
         }
         return enc;
     }
@@ -182,11 +186,13 @@ public class PrimaryCareBusinessLogic {
         for (Obs obs : observations) {
             enc.addObs(obs);
         }
-        Context.getEncounterService().saveEncounter(enc);
-        return enc;
+        return PrimaryCareBusinessLogic.saveEncounterAndVerifyVisit(enc);
     }
     
-    
+    /**
+     * @param datetime
+     * @return
+     */
     public static Date[] getStartAndEndOfDay(Date datetime) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(datetime);
@@ -209,7 +215,24 @@ public class PrimaryCareBusinessLogic {
      * @return
      */
     public static EncounterType getRegistrationEncounterType() {
-        return Context.getEncounterService().getEncounterType("Registration");
+    	if (PrimaryCareConstants.ENCOUNTER_TYPE_REGISTRATION == null)
+    		throw new RuntimeException("Registration Encounter Type is null");
+    	return PrimaryCareConstants.ENCOUNTER_TYPE_REGISTRATION;
+        //return Context.getEncounterService().getEncounterType("Registration");
+    }
+
+    public static EncounterType getVitalsEncounterType() {
+    	if (PrimaryCareConstants.ENCOUNTER_TYPE_REGISTRATION == null)
+    		throw new RuntimeException("Vitals Encounter Type is null");
+    	return PrimaryCareConstants.ENCOUNTER_TYPE_VITALS;
+        //return Context.getEncounterService().getEncounterType("Registration");
+    }
+    
+    public static VisitType getOutpatientVisitType() {
+    	if (PrimaryCareConstants.ENCOUNTER_TYPE_REGISTRATION == null)
+    		throw new RuntimeException("Primary Care Visit Type is null");
+    	return PrimaryCareConstants.VISIT_TYPE_OUTPATIENT;
+        //return Context.getEncounterService().getEncounterType("Registration");
     }
 
 
@@ -712,6 +735,48 @@ public class PrimaryCareBusinessLogic {
         }
         return concept;
     }
+	
+	/**
+	 * wrapper for saveEncounter that ensures a Visit is created when registration encounter is created.
+	 * Needs to handle finding the visit for creation of vitals encounter also...
+	 * @param e
+	 * @return
+	 */
+	public static Encounter saveEncounterAndVerifyVisit(Encounter e){
+		
+		if (e.getVisit() == null && e.getEncounterType().equals(PrimaryCareBusinessLogic.getRegistrationEncounterType())){
+			Visit v = new Visit();
+			v.setCreator(Context.getAuthenticatedUser());
+			v.setDateCreated(new Date());
+			v.setLocation(e.getLocation());
+			v.setStartDatetime(e.getEncounterDatetime());
+			
+			//either the end of the day, or encounterDatetime + 8 hours, whichever is later.
+			Calendar c = Calendar.getInstance();
+			c.setTime(e.getEncounterDatetime());
+			c.add(Calendar.HOUR, 8);
+			//if visit is starting after 10 pm, set end time to start time plus 8 hours.  else 11:59:59 on that day is OK.
+			v.setStopDatetime(getStartAndEndOfDay(e.getEncounterDatetime())[1].getTime() - e.getEncounterDatetime().getTime() < 1000*60*60*2 ? c.getTime() : getStartAndEndOfDay(e.getEncounterDatetime())[1]);
+			
+			v.setPatient(e.getPatient());
+			v.setVisitType(getOutpatientVisitType());
+			v.setVoided(false);
+			//I don't know if encounter needs to be saved before visit is created, so...
+			v.setEncounters(Collections.singleton(e));
+			v = Context.getVisitService().saveVisit(v);
+			e.setVisit(v);
+		} else {
+			//try to find existing visit
+			List<Visit> vList = Context.getVisitService().getVisits(Collections.singletonList(getOutpatientVisitType()), Collections.singletonList(e.getPatient()),Collections.singleton(e.getLocation()), null, getStartAndEndOfDay(e.getEncounterDatetime())[0], getStartAndEndOfDay(e.getEncounterDatetime())[1],  null, null, null, true, false);
+			if (vList != null && vList.size() > 0){
+				Visit v = vList.get(0);
+				e.setVisit(v);
+			}
+				
+		}
+		return Context.getEncounterService().saveEncounter(e);
+
+	}
     
 
 }

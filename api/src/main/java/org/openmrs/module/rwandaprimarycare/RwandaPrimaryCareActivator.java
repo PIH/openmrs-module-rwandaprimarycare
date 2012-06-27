@@ -20,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.EncounterRole;
 import org.openmrs.EncounterType;
 import org.openmrs.Privilege;
+import org.openmrs.VisitType;
 import org.openmrs.api.APIException;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.UserService;
@@ -74,6 +75,8 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
 	    	    Context.addProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_PRIVILEGES);
 	    	    Context.addProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PRIVILEGES);
 	    	    Context.addProxyPrivilege("Manage Encounter Roles");
+	    	    Context.addProxyPrivilege("View Visit Types");
+	    	    Context.addProxyPrivilege("Manage Visit Types");
 	            addMetadata();
 	        } catch (Exception ex) {
 	            ex.printStackTrace();
@@ -84,6 +87,8 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
 		        Context.removeProxyPrivilege(OpenmrsConstants.PRIV_MANAGE_PRIVILEGES);
 		        Context.removeProxyPrivilege(OpenmrsConstants.PRIV_VIEW_PRIVILEGES);
 		        Context.removeProxyPrivilege("Manage Encounter Roles");
+		        Context.removeProxyPrivilege("View Visit Types");
+		        Context.removeProxyPrivilege("Manage Visit Types");
 	            es = null;
 		        us = null;
 	            Context.closeSession();
@@ -170,6 +175,22 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
              }
              PrimaryCareConstants.PRIMARY_CARE_ENCOUNTER_ROLE = er;
          }
+         {
+             VisitType vt = Context.getVisitService().getVisitTypeByUuid("3515b588-b1df-4110-991b-0d603686d8e6");
+             if (vt == null){
+            	 vt = new VisitType();
+            	 vt.setCreator(Context.getEncounterService().getEncounterRoleByUuid(EncounterRole.UNKNOWN_ENCOUNTER_ROLE_UUID).getCreator());//hack
+            	 vt.setDateCreated(new Date());
+            	 vt.setDescription("Represents a single day primary care visit to a health center.");
+            	 vt.setName("Primary Care Outpatient");
+            	 vt.setRetired(false);
+            	 vt.setUuid("3515b588-b1df-4110-991b-0d603686d8e6");
+            	 vt = Context.getVisitService().saveVisitType(vt);
+            	 log.info("Created primary care outpatient visit type");
+             }
+             PrimaryCareConstants.VISIT_TYPE_OUTPATIENT = vt;
+         }
+         
 	}
 	
 }

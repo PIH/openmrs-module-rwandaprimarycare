@@ -3,12 +3,14 @@ package org.openmrs.module.rwandaprimarycare;
 import org.openmrs.EncounterRole;
 import org.openmrs.EncounterType;
 import org.openmrs.Privilege;
+import org.openmrs.VisitType;
 
 public class PrimaryCareConstants {
     
     public static EncounterType ENCOUNTER_TYPE_REGISTRATION;
     public static EncounterType ENCOUNTER_TYPE_VITALS;
     public static EncounterType ENCOUNTER_TYPE_DIAGNOSIS;
+    public static VisitType VISIT_TYPE_OUTPATIENT;
     public static Privilege PRINT_BARCODE_OFFLINE_PRIVILEGE;
     public static Privilege GENERATE_BULK_PRIMARY_CARE_IDS;
     public static EncounterRole PRIMARY_CARE_ENCOUNTER_ROLE;
@@ -16,6 +18,7 @@ public class PrimaryCareConstants {
     public static final String GLOBAL_PROPERTY_PRIMARY_IDENTIFIER_TYPE = "registration.primaryIdentifierType";
     public static final String GLOBAL_PROPERTY_OTHER_IDENTIFIER_TYPES = "registration.otherIdentifierTypes";
     public static final String GLOBAL_PROPERTY_BAR_CODE_COUNT = "registration.barCodeCount";
+    
     
     // NOTE ABOUT THE LOCATION GLOBAL PROPERTIES:  WHEN A CLERK LOGS IN AT A GIVEN LOCATION, THAT LOCATION WILL INFORM THE IDENTIFIER VALIDATOR
     // WHAT PREFIX TO APPEND.  THEREFORE, ACROSS SYNC NETWORKS, TO ENSURE THAT IDS ARE NEVER DUPLICATED, THE VALUES
@@ -47,5 +50,6 @@ public class PrimaryCareConstants {
     public final static String GLOBAL_PROPERTY_RESTRICT_BY_HEALTH_CENTER = "registration.restrictSearchByHealthCenter";
     public static final String MOTHER_NAME_ATTRIBUTE_TYPE = "Mother's name";
     public static final String FATHER_NAME_ATTRIBUTE_TYPE = "Father's name";
+   
     
 }
