@@ -16,7 +16,7 @@
 		<c:if test="${!empty showDiagnosisLink}">
 			<c:set var="goToDiagnosisApp"><spring:message code="rwandaprimarycare.goToDiagnosisApplication"/></c:set>
 			<td align="center">
-				<touchscreen:button label="${goToDiagnosisApp}" href="${pageContext.request.contextPath}/module/diagnosiscapturerwanda/diagnosisPatientDashboard.list?patientId=${patient.patientId}"/>
+				<touchscreen:button label="${goToDiagnosisApp}" href="${pageContext.request.contextPath}/module/diagnosiscapturerwanda/diagnosisPatientDashboard.list?patientId=${patient.patientId}&encounterUuid=${encounter.uuid}"/>
 			</td>	
 		</c:if>
 	</tr>
