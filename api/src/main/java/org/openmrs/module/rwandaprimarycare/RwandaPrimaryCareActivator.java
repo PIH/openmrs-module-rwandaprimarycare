@@ -109,6 +109,8 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
 	public void addMetadata(){
 		 {
      		EncounterType et = Context.getEncounterService().getEncounterType("Registration");
+     		if (et == null)
+     			et = Context.getEncounterService().getEncounterTypeByUuid("cfe614d5-fa7e-4919-b76b-a66117f57e4c");
      		if (et == null) {
      		    et = new EncounterType("Registration", "Patient seen at registration desk");
      		    et.setUuid("cfe614d5-fa7e-4919-b76b-a66117f57e4c");
@@ -119,6 +121,8 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
  		}
  		{
  		    EncounterType et = Context.getEncounterService().getEncounterType("Vitals");
+ 		    if (et == null)
+ 		    	et = Context.getEncounterService().getEncounterTypeByUuid("daf32375-d293-4e27-a68d-2a58494c96e1");
              if (et == null) {
                  et = new EncounterType("Vitals", "Patient vital signs taken before seeing clinician");
                  et.setUuid("daf32375-d293-4e27-a68d-2a58494c96e1");
@@ -127,8 +131,10 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
              }
              PrimaryCareConstants.ENCOUNTER_TYPE_VITALS = et;
  		}
-         {
+        {
              EncounterType et = Context.getEncounterService().getEncounterType("Diagnosis");
+             if (et == null)
+  		    	et = Context.getEncounterService().getEncounterTypeByUuid("e9355a6e-b2df-44b4-911c-104c6a41ed24");
              if (et == null) {
                  et = new EncounterType("Diagnosis", "Diagnosis recorded");
                  et.setUuid("e9355a6e-b2df-44b4-911c-104c6a41ed24");
