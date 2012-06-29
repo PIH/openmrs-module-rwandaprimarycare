@@ -186,6 +186,7 @@ public class RwandaPrimaryCarePatientDashboardController {
 	        if (insuranceType != null && registrationEncounterToday != null){
 	        		System.out.println("HERE!");
 	            	//for edit, just void
+	        		//TODO:  don't update Obs if you don't need to...
 	            	for (Obs o : registrationEncounterToday.getObs()){
 	            		if (o.getConcept().equals(PrimaryCareUtil.getInsuranceTypeConcept())){
 	            			Context.getObsService().voidObs(o, "edited through touchscreen UI");

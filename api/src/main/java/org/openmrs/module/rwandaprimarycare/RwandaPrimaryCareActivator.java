@@ -175,7 +175,7 @@ public class RwandaPrimaryCareActivator implements Activator, Runnable {
             	 //this is for openmrs1.9.  Awful.
             	 er.setCreator(Context.getEncounterService().getEncounterRoleByUuid(EncounterRole.UNKNOWN_ENCOUNTER_ROLE_UUID).getCreator());
             	 er.setDateCreated(new Date());
-            	 er.setRetired(false);	
+            	 er.setRetired(false);
             	 Context.getEncounterService().saveEncounterRole(er);
             	 log.info("Created Encounter Role representing primary care registration");
              }
