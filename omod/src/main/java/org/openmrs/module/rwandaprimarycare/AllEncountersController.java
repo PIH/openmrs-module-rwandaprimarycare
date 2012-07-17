@@ -44,6 +44,8 @@ public class AllEncountersController {
 	        }
 	        model.addAttribute("patient", patient);
 	        model.addAttribute("encounters", encounters);
+	        model.addAttribute("vitalsEncounterType", PrimaryCareBusinessLogic.getVitalsEncounterType());
+	        model.addAttribute("registrationEncounterType", PrimaryCareBusinessLogic.getRegistrationEncounterType());
     	} catch(Exception e)
     	{
     		throw new PrimaryCareException(e);

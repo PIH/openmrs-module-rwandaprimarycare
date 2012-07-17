@@ -54,8 +54,9 @@ ${returnUrl}
 
   
 <c:set var="delete"><spring:message code="rwandaprimarycare.touchscreen.delete"/></c:set>
-<touchscreen:button label="${delete}" cssClass="red button" onClick="$j('#deleteDialog').dialog('open')"/>
-
+<c:if test="${encounter.encounterType == vitalsEncounterType || encounter.encounterType == registrationEncounterType}">
+	<touchscreen:button label="${delete}" cssClass="red button" onClick="$j('#deleteDialog').dialog('open')"/>
+</c:if>
 
 <div id="deleteDialog" title="Delete encounter" align="center">
 	<c:url var="deleteUrl" value="deleteEncounter.form">
