@@ -184,7 +184,6 @@ public class RwandaPrimaryCarePatientDashboardController {
 	        }    
 	
 	        if (insuranceType != null && registrationEncounterToday != null){
-	        		System.out.println("HERE!");
 	            	//for edit, just void
 	        		//TODO:  don't update Obs if you don't need to...
 	            	for (Obs o : registrationEncounterToday.getObs()){
@@ -212,7 +211,6 @@ public class RwandaPrimaryCarePatientDashboardController {
 	                registrationEncounterToday = PrimaryCareBusinessLogic.saveEncounterAndVerifyVisit(registrationEncounterToday);
 
 	        }
-	        //TODO: use this to allow link to diagnosis capture app.  I haven't hooked up the jsps yet. 
 	        Object o = session.getAttribute(PrimaryCareConstants.SESSION_ATTRIBUTE_DIAGNOSIS_LOCATION_CODE);
 	        if (o != null)
 	        	model.addAttribute("showDiagnosisLink", Boolean.TRUE);

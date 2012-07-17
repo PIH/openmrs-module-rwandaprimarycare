@@ -38,33 +38,35 @@
 			</c:if>
 			<table>
 				<c:forEach var="encounter" items="${encountersToday}">
-					<tr>
-						<td>
-							<openmrs:formatDate format="HH:mm" date="${encounter.encounterDatetime}"/>
-						</td>
-						<td align="right">
-							<touchscreen:encounterButton encounter="${encounter}" size="small"/>
-						</td>
-						<td>
-		
-								<c:if test="${fn:length(encounter.obs) == 0}">
-									<spring:message code="rwandaprimarycare.touchscreen.noObservations"/>
-								</c:if>
-								<c:forEach var="obs" items="${encounter.obs}" end="3">
-									<openmrs:format concept="${obs.concept}"/>: <openmrs:format obsValue="${obs}"/> <br/>
-								</c:forEach>
-								<c:if test="${fn:length(encounter.obs) > 4}">
-									...
-								</c:if>
-					
-						</td>
-						<td>
-								<c:set var="edit"><spring:message code="rwandaprimarycare.edit"/></c:set>
-								<c:if test="${encounter.encounterType == registrationEncounterType}">
-										<touchscreen:button label="${edit}" href="${pageContext.request.contextPath}/module/rwandaprimarycare/patient.form?patientId=${patient.patientId}&serviceRequested=0"/>	
-								</c:if>
-						</td>
-					</tr>
+					<c:if test="${encounter.voided == false}">
+						<tr>
+							<td>
+								<openmrs:formatDate format="HH:mm" date="${encounter.encounterDatetime}"/>
+							</td>
+							<td align="right">
+								<touchscreen:encounterButton encounter="${encounter}" size="small"/>
+							</td>
+							<td>
+			
+									<c:if test="${fn:length(encounter.obs) == 0}">
+										<spring:message code="rwandaprimarycare.touchscreen.noObservations"/>
+									</c:if>
+									<c:forEach var="obs" items="${encounter.obs}" end="3">
+										<openmrs:format concept="${obs.concept}"/>: <openmrs:format obsValue="${obs}"/> <br/>
+									</c:forEach>
+									<c:if test="${fn:length(encounter.obs) > 4}">
+										...
+									</c:if>
+						
+							</td>
+							<td>
+									<c:set var="edit"><spring:message code="rwandaprimarycare.edit"/></c:set>
+									<c:if test="${encounter.encounterType == registrationEncounterType}">
+											<touchscreen:button label="${edit}" href="${pageContext.request.contextPath}/module/rwandaprimarycare/patient.form?patientId=${patient.patientId}&serviceRequested=0"/>	
+									</c:if>
+							</td>
+						</tr>
+					</c:if>
 				</c:forEach>
 			</table>
 		</td>
