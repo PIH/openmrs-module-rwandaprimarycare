@@ -7,6 +7,7 @@
 
 <form method="post">
 	<input type="hidden" name="encounterType" value="${encounterType.encounterTypeId}"/>
+	
 	<c:forEach var="question" items="${questions}" varStatus="status">
 		<input type="hidden" name="obs_concept_${status.index}" value="${question.concept.conceptId}"/>
 		<c:if test="${question.concept.datatype.numeric}">

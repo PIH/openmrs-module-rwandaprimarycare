@@ -1,5 +1,6 @@
 package org.openmrs.module.rwandaprimarycare;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -50,6 +52,7 @@ public class RwandaPrimaryCarePatientDashboardController {
             @RequestParam(required=false, value="gatherInsurance") Integer gatherInsurance,
             @RequestParam(required=false, value="insuranceNumber") String insuranceNumber,
             @RequestParam(required=false, value="insuranceType") Integer insuranceType,
+            @RequestParam(required=false, value="visitDate") Long visitDate,
             HttpSession session,
             ModelMap model) throws PrimaryCareException {
     	//LK: Need to ensure that all primary care methods only throw a PrimaryCareException
@@ -62,7 +65,11 @@ public class RwandaPrimaryCarePatientDashboardController {
 	        	printBarCode = false;
 	        
 	        Patient patient = Context.getPatientService().getPatient(patientId);
-	        PrimaryCareBusinessLogic.setHealthCenter(patient, PrimaryCareWebLogic.getCurrentLocation(session));
+	        
+	        if(Context.getAdministrationService().getGlobalProperty("registration.overrideHealthCenterAttribute").equals("true"))
+	        {
+	        	PrimaryCareBusinessLogic.setHealthCenter(patient, PrimaryCareWebLogic.getCurrentLocation(session));
+	        }
 	        // lazy loading
 	            for (PersonAttribute pa : patient.getAttributes()){
 	                pa.getAttributeType().getName();
@@ -99,7 +106,17 @@ public class RwandaPrimaryCarePatientDashboardController {
 	        }
 	        Encounter registrationEncounterToday = null;
 	        {
-	            Date[] day = PrimaryCareBusinessLogic.getStartAndEndOfDay(new Date());
+	            Date[] day = null;
+	            if(visitDate != null)
+	            {
+	            	day = PrimaryCareBusinessLogic.getStartAndEndOfDay(new Date(visitDate));
+	            	model.addAttribute("visitDate", visitDate);
+	            	model.addAttribute("todaysDate",new Date(visitDate));
+	            }
+	            else
+	            {
+	            	day = PrimaryCareBusinessLogic.getStartAndEndOfDay(new Date());
+	            }
 	            List<Encounter> today = Context.getEncounterService().getEncounters(patient, null, day[0], day[1], null, null, false);
 	            Collections.sort(today, new Comparator<Encounter>() {
 	                public int compare(Encounter left, Encounter right) {
@@ -211,9 +228,9 @@ public class RwandaPrimaryCarePatientDashboardController {
 	                registrationEncounterToday = PrimaryCareBusinessLogic.saveEncounterAndVerifyVisit(registrationEncounterToday);
 
 	        }
-	        Object o = session.getAttribute(PrimaryCareConstants.SESSION_ATTRIBUTE_DIAGNOSIS_LOCATION_CODE);
-	        if (o != null)
+	        if (Context.getAdministrationService().getGlobalProperty("registration.showDiagnosisLink").equals("true")) {
 	        	model.addAttribute("showDiagnosisLink", Boolean.TRUE);
+	        }
 	        if (registrationEncounterToday != null)
 	        	model.addAttribute("registrationEncounterToday", registrationEncounterToday);
 	        model.addAttribute("registrationEncounterType", PrimaryCareBusinessLogic.getRegistrationEncounterType());
@@ -235,6 +252,66 @@ public class RwandaPrimaryCarePatientDashboardController {
 	                        (Location) session.getAttribute(PrimaryCareConstants.SESSION_ATTRIBUTE_WORKSTATION_LOCATION),
 	                        new Date(), Context.getAuthenticatedUser());
 	        return "redirect:/module/rwandaprimarycare/patient.form?patientId=" + patientId + "&printBarCode=true&serviceRequested=0";
+    	} catch(Exception e)
+    	{
+    		throw new PrimaryCareException(e);
+    	} 
+    }
+    
+    @RequestMapping("/module/rwandaprimarycare/patientIsNotPresent")
+    public String patientIsNotPresent(@RequestParam("patientId") int patientId, HttpSession session, ModelMap model) throws PrimaryCareException {
+    	//LK: Need to ensure that all primary care methods only throw a PrimaryCareException
+    	//So that errors will be directed to a touch screen error page
+    	try{
+    		Patient patient = Context.getPatientService().getPatient(patientId);
+    		model.addAttribute("patient", patient);
+    		return "/module/rwandaprimarycare/backenterPatientVisit";
+    	} catch(Exception e)
+    	{
+    		throw new PrimaryCareException(e);
+    	} 
+    }
+    
+    @RequestMapping(value="/module/rwandaprimarycare/visitDate", method=RequestMethod.GET)
+    public String visitDate(@RequestParam("patientId") int patientId, HttpSession session, ModelMap model) throws PrimaryCareException {
+    	//LK: Need to ensure that all primary care methods only throw a PrimaryCareException
+    	//So that errors will be directed to a touch screen error page
+    	try{
+	        Calendar todaysDate = Calendar.getInstance();
+	        Integer backEntry = Integer.valueOf(Context.getAdministrationService().getGlobalProperty("registration.backEntryLimit"));
+	        
+	        List<Date> dates = new ArrayList<Date>();
+	        
+	        for(int i = 0; i < backEntry; i++)
+	        {
+	        	todaysDate.add(Calendar.DAY_OF_YEAR, -1);
+	        	Date date = todaysDate.getTime();
+	        	dates.add(date);
+	        }
+	        
+    		model.addAttribute("dates", dates);
+    		
+    		return "/module/rwandaprimarycare/visitDate";
+    	} catch(Exception e)
+    	{
+    		throw new PrimaryCareException(e);
+    	} 
+    }
+    
+    @RequestMapping(value="/module/rwandaprimarycare/visitDate", method=RequestMethod.POST)
+    public String visitDateSumbit(@RequestParam("patientId") int patientId, 
+                                  @RequestParam("visitDate") Long visitDate,
+                                  HttpSession session, ModelMap model) throws PrimaryCareException {
+    	//LK: Need to ensure that all primary care methods only throw a PrimaryCareException
+    	//So that errors will be directed to a touch screen error page
+    	try{
+	    	Date date = new Date(visitDate);
+    		//note:  this adds the registration encounter.  NOTE:  provider in the created encounter is the registration clerk.
+	        PrimaryCareBusinessLogic.patientSeen(
+	                        Context.getPatientService().getPatient(patientId),
+	                        (Location) session.getAttribute(PrimaryCareConstants.SESSION_ATTRIBUTE_WORKSTATION_LOCATION),
+	                        date, Context.getAuthenticatedUser());
+	        return "redirect:/module/rwandaprimarycare/patient.form?patientId=" + patientId + "&printBarCode=false&serviceRequested=0&visitDate=" + visitDate;
     	} catch(Exception e)
     	{
     		throw new PrimaryCareException(e);

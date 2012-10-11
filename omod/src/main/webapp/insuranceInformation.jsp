@@ -6,6 +6,7 @@
 <table> 
 	<tr><td></td>
 		<td>
+			
 			<select optional="false" name="insuranceType" label="<spring:message code='rwandaprimarycare.touchscreen.insuranceType'/>" helpText="<spring:message code='rwandaprimarycare.touchscreen.insuranceType'/>">
 					<c:forEach var="answer" items="${insuranceTypes}">
 						<option value="${answer.conceptId}"
@@ -26,6 +27,7 @@
 		<td></td>
 		<td>
 			<input type="hidden" value="${patient.patientId}" name="patientId"/>
+			<input type="hidden" value="${visitDate}" name="visitDate"/>
 			<input type="submit" value="Done"/>
 		</td>
 	</tr>

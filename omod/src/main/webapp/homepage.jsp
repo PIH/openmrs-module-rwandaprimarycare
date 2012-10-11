@@ -38,14 +38,16 @@
 		<touchscreen:button label="${bulkIdGeneration}" href="bulkGenerateIds.form"/>
 	</openmrs:hasPrivilege>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<!-- this is here so that providers who see the diagnosis capture app can jump between registration and diagnoses -->
-	<c:if test="${!empty showDiagnosisLink}">
-		<touchscreen:button label="${goToDiagnosisApp}" href="${pageContext.request.contextPath}/module/diagnosiscapturerwanda/diagnosisHomepage.list"/>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	</c:if>
-	
 	
 	<touchscreen:button label="${myPropertiesStr}" href="myProperties.form"/>
+	
+	<!-- this is here so that providers who see the diagnosis capture app can jump between registration and diagnoses -->
+	<c:if test="${!empty showDiagnosisLink}">
+		<openmrs:hasPrivilege privilege="Diagnosis Capture">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<touchscreen:button label="${goToDiagnosisApp}" cssClass="dark" href="${pageContext.request.contextPath}/module/diagnosiscapturerwanda/diagnosisHomepage.list"/>
+		</openmrs:hasPrivilege>
+	</c:if>
 	<br/>
 	<br/>
 	<br/>

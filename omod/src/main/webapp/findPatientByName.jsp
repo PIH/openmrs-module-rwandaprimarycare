@@ -9,12 +9,12 @@
 		<tr>
 			<td>Rwandan Name</td>
 			<c:set var="rwandanName"><spring:message code='rwandaprimarycare.touchscreen.rwandanName' /></c:set>
-			<td><touchscreen:textInput required="false"  label="${rwandanName}" field_name="RWNAME" fieldType="upper" value="${search}" allowFreeText="true" ajaxURL="findPatientByNameAjax.form?searchType=RWNAME&search="/></td>
+			<td><touchscreen:textInput required="false"  label="${rwandanName}" field_name="RWNAME" fieldType="upper" value="" allowFreeText="true" ajaxURL="findPatientByNameAjax.form?searchType=RWNAME&search="/></td>
 		</tr>
 		<tr>
 			<td>French/Ango Name</td>
 			<c:set var="christianName"><spring:message code='rwandaprimarycare.touchscreen.christianName' /></c:set>
-			<td><touchscreen:textInput required="false" label="${christianName}" field_name="FANAME" value="${search}" allowFreeText="true" ajaxURL="findPatientByNameAjax.form?searchType=FANAME&search="/></td>
+			<td><touchscreen:textInput required="false" label="${christianName}" field_name="FANAME" value="" allowFreeText="true" ajaxURL="findPatientByNameAjax.form?searchType=FANAME&search="/></td>
 		</tr>
 			
 		<tr>
@@ -33,7 +33,7 @@
 
 			<td>Age</td>
 			<c:set var="age"><spring:message code='rwandaprimarycare.touchscreen.age' /></c:set>
-			<td><touchscreen:numberInput required="true" label="${age}" field_name="AGE" value="${search}" min="0" max="150"/></td>
+			<td><touchscreen:numberInput required="true" label="${age}" field_name="AGE" value="" min="0" max="150"/></td>
 
 			
 		</tr>	

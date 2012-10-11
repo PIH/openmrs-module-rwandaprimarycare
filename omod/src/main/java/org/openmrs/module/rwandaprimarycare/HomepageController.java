@@ -61,10 +61,9 @@ public class HomepageController {
 	            }
 	        }
 	        
-	        //TODO: use this to allow link to diagnosis capture app.  I haven't hooked up the jsps yet. 
-	        Object o = session.getAttribute(PrimaryCareConstants.SESSION_ATTRIBUTE_DIAGNOSIS_LOCATION_CODE);
-	        if (o != null)
+	        if (Context.getAdministrationService().getGlobalProperty("registration.showDiagnosisLink").equals("true")) {
 	        	model.addAttribute("showDiagnosisLink", Boolean.TRUE);
+	        }
 	        
 	        PrimaryCareWebLogic.clearSessionSearchAttributes(session);
     	} catch(Exception e)
@@ -85,6 +84,9 @@ public class HomepageController {
 	        }
 	        String locationStr = request.getParameter("location");
 	
+	        if (Context.getAdministrationService().getGlobalProperty("registration.showDiagnosisLink").equals("true")) {
+	        	model.addAttribute("showDiagnosisLink", Boolean.TRUE);
+	        }
 	        
             if (locationStr != null && !locationStr.equals("")){
                 
@@ -92,6 +94,7 @@ public class HomepageController {
                 if (location == null)
                     throw new NullPointerException();
                 session.setAttribute(PrimaryCareConstants.SESSION_ATTRIBUTE_WORKSTATION_LOCATION, location);
+                session.setAttribute(PrimaryCareConstants.SESSION_ATTRIBUTE_DIAGNOSIS_LOCATION_CODE, location);
                 //NOTE:   this is used by the identifier validator to determine identifier prefixes.  Default to default location global property if not found when requesting new IDs.
                 Context.setVolatileUserData(PrimaryCareConstants.VOLATILE_USER_DATA_LOGIN_LOCATION, location);
                 User user = Context.getAuthenticatedUser();

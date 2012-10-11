@@ -1,6 +1,7 @@
 package org.openmrs.module.rwandaprimarycare;
 
 import org.openmrs.Encounter;
+import org.openmrs.Visit;
 import org.openmrs.api.context.Context;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -43,6 +44,24 @@ public class ViewEncounterController {
 	    	Encounter encounter = Context.getEncounterService().getEncounter(encounterId);
 	        Integer patientId = encounter.getPatientId();
 	        Context.getEncounterService().voidEncounter(encounter, "N/A");
+	        //now check to see if we should void the visit as well.
+//	        if(encounter.getVisit() !=  null)
+//	        {
+//	        	Visit visit = Context.getVisitService().getVisit(encounter.getVisit().getId());
+//	        	boolean voidVisit = true;
+//	        	
+//	        	for(Encounter e: visit.getEncounters())
+//	        	{
+//	        		if(!e.isVoided())
+//	        		{
+//	        			voidVisit = false;
+//	        		}
+//	        	}
+//	        	if(voidVisit)
+//	        	{
+//	        		Context.getVisitService().voidVisit(visit, "N/A");
+//	        	}
+//	        }
 	        if (!StringUtils.hasText(returnUrl))
 	            returnUrl = "/module/rwandaprimarycare/patient.form?patientId=" + patientId;
 	        return "redirect:" + returnUrl;

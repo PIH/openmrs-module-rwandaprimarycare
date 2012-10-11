@@ -14,10 +14,12 @@
 		</td>
 		<!-- this is here so that providers who see the diagnosis capture app can jump between registration and diagnoses -->
 		<c:if test="${!empty showDiagnosisLink}">
-			<c:set var="goToDiagnosisApp"><spring:message code="rwandaprimarycare.goToDiagnosisApplication"/></c:set>
-			<td align="center">
-				<touchscreen:button label="${goToDiagnosisApp}" href="${pageContext.request.contextPath}/module/diagnosiscapturerwanda/diagnosisPatientDashboard.list?patientId=${patient.patientId}&encounterUuid=${registrationEncounterToday.uuid}"/>
-			</td>	
+			<openmrs:hasPrivilege privilege="Diagnosis Capture">
+				<c:set var="goToDiagnosisApp"><spring:message code="rwandaprimarycare.goToDiagnosisApplication"/></c:set>
+				<td align="center">
+					<touchscreen:button label="${goToDiagnosisApp}" cssClass="dark" href="${pageContext.request.contextPath}/module/diagnosiscapturerwanda/diagnosisPatientDashboard.list?patientId=${patient.patientId}&encounterUuid=${registrationEncounterToday.uuid}"/>
+				</td>	
+			</openmrs:hasPrivilege>
 		</c:if>
 	</tr>
 	</table>
@@ -27,7 +29,7 @@
 
 <table width="100%">
 	<tr>
-		<td width="50%" style="background-color: #e0f0e0" align="center"><span class="bigtext"><u><spring:message code="rwandaprimarycare.touchscreen.todaysVisit"/></u></span></td>
+		<td width="50%" style="background-color: #e0f0e0" align="center"><span class="bigtext"><u><c:choose><c:when test="${!empty todaysDate }"><openmrs:formatDate date="${todaysDate}" type="medium" /></c:when><c:otherwise><spring:message code="rwandaprimarycare.touchscreen.todaysVisit"/></c:otherwise></c:choose></u></span></td>
 		<td width="25%" align="center"><span class="bigtext"><u><spring:message code="rwandaprimarycare.touchscreen.enterVisitData"/></u></span></td>
 		<td width="25%" align="center"><span class="bigtext"><u><spring:message code="rwandaprimarycare.touchscreen.printAnotherBarCode"/></u></span></td>
 	</tr>
@@ -71,7 +73,14 @@
 		<td align="center">
 		<c:set var="bcVitals"><spring:message code="rwandaprimarycare.touchscreen.vitals"/></c:set>
 		<c:set var="bcDiagnosis"><spring:message code="rwandaprimarycare.touchscreen.diagnosis"/></c:set>
-			<touchscreen:button label="${bcVitals}" href="enterSimpleEncounter.form?form=vitals&patientId=${patient.patientId}" cssClass="green"/> <br/>
+			<c:choose>
+				<c:when test="${empty visitDate}">
+					<touchscreen:button label="${bcVitals}" href="enterSimpleEncounter.form?form=vitals&patientId=${patient.patientId}" cssClass="green"/> <br/>
+				</c:when>
+				<c:otherwise>
+					<touchscreen:button label="${bcVitals}" href="enterSimpleEncounter.form?form=vitals&patientId=${patient.patientId}&visitDate=${visitDate}" cssClass="green"/> <br/>
+				</c:otherwise>
+			</c:choose>
 		<br/>
 		</td>
 		<td align="center">

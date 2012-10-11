@@ -41,7 +41,9 @@ public class EnterSimpleEncounterController {
     }
     
     @RequestMapping(method=RequestMethod.GET, params="form=vitals")
-    public String setupVitalsForm(@RequestParam("patientId") Integer patientId, ModelMap model) throws PrimaryCareException {
+    public String setupVitalsForm(@RequestParam("patientId") Integer patientId, 
+                                  @RequestParam(required=false, value="visitDate") Long visitDate,
+                                  ModelMap model) throws PrimaryCareException {
     	//LK: Need to ensure that all primary care methods only throw a PrimaryCareException
     	//So that errors will be directed to a touch screen error page
     	try{
@@ -69,6 +71,11 @@ public class EnterSimpleEncounterController {
 	        }
 	        questions.add(new Question(heightMsg.toString(), PrimaryCareBusinessLogic.getHeightConcept(), false));
 	        model.addAttribute("questions", questions);
+	        
+	        if(visitDate != null)
+	        {
+	        	model.addAttribute("visitDate", visitDate);
+	        }
 	        
 	        
 	        
@@ -107,6 +114,7 @@ public class EnterSimpleEncounterController {
             @RequestParam("patientId") Integer patientId,
             @RequestParam("encounterType") Integer encounterTypeId,
             @RequestParam("form") String form, 
+            @RequestParam(required=false, value="visitDate") Long visitDate,
             WebRequest request,
             HttpSession session) throws PrimaryCareException {
     	//LK: Need to ensure that all primary care methods only throw a PrimaryCareException
@@ -162,8 +170,17 @@ public class EnterSimpleEncounterController {
 	        	}
 	        }
 	        
-	        PrimaryCareBusinessLogic.createEncounter(patient, encounterType, workstationLocation, new Date(), Context.getAuthenticatedUser(), obsToCreate);
-	        return "redirect:/module/rwandaprimarycare/patient.form?patientId=" + patientId;
+	        if(visitDate != null)
+	        {
+	        	PrimaryCareBusinessLogic.createEncounter(patient, encounterType, workstationLocation, new Date(visitDate), Context.getAuthenticatedUser(), obsToCreate);
+	        	 return "redirect:/module/rwandaprimarycare/patient.form?patientId=" + patientId + "&visitDate=" + visitDate;
+	        }
+	        else
+	        {
+	        	PrimaryCareBusinessLogic.createEncounter(patient, encounterType, workstationLocation, new Date(), Context.getAuthenticatedUser(), obsToCreate);
+	        	 return "redirect:/module/rwandaprimarycare/patient.form?patientId=" + patientId;
+	        }
+	       
     	} catch(Exception e)
     	{
     		throw new PrimaryCareException(e);
