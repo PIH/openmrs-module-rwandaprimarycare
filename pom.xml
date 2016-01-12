@@ -3,7 +3,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>rwandaprimarycare</artifactId>
-	<version>2.0.7</version>
+	<version>2.0.8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Rwanda Primary Care Module</name>
 	<description>Parent project for Rwanda Primary Care Module</description>
@@ -14,7 +14,7 @@
 		<connection>scm:git:https://github.com/PIH/openmrs-module-rwandaprimarycare/</connection>
 		<developerConnection>scm:git:https://github.com/PIH/openmrs-module-rwandaprimarycare/</developerConnection>
 		<url>https://github.com/PIH/openmrs-module-rwandaprimarycare/</url>
-		<tag>2.0.7</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<modules>
