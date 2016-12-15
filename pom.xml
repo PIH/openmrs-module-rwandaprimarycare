@@ -23,7 +23,7 @@
 	</modules>
 
 	<properties>
-		<openMRSVersion>1.9.0</openMRSVersion>
+		<openMRSVersion>1.9.11</openMRSVersion>
 		<htmlformentryVersion>1.9.3</htmlformentryVersion>
 		<addresshierarchyrwandaVersion>1.2.6</addresshierarchyrwandaVersion>
 		<idgenVersion>2.2</idgenVersion>
